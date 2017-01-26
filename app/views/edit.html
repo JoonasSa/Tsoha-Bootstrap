@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Muokkaa kurssia Linis</h1>
+
+<form>
+    <div class="form-group">
+        <label>Nimi</label>
+        <input class="form-control" value="Linis" type="text">
+    </div>
+    <div class="form-group">
+        <label>Opintopisteet</label>
+        <input class="form-control" value="5" type="text">
+    </div>
+    <div class="form-group">
+        <label>Opettaja</label>
+        <input class="form-control" value="Matti Möttönen" type="text">
+    </div>
+    <div class="form-group">
+        <label>Status</label>
+        <div class="checkbox">
+        <label>
+            <input type="checkbox">
+            Kesken
+        </label>
+    </div>  
+    </div>
+    <div class="form-group">
+        <label>Jakso</label>
+        <input class="form-control" value="3" type="text">
+    </div>
+    
+    <div class="form-group">
+        <label>Kuvaus</label>
+        <textarea class="form-control">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc ultrices nisl enim, cursus vehicula lacus vestibulum in. Mauris nunc lacus, auctor at mauris in, tincidunt hendrerit arcu. Fusce vel sapien nec orci venenatis vehicula in quis est. Aliquam gravida erat sed purus porta, id vulputate metus tempor. Maecenas vulputate nisi ac ipsum rutrum semper a vitae ex. Ut lorem sapien, tincidunt a sollicitudin id, convallis et augue. Mauris bibendum euismod augue a finibus. Nam eu suscipit ex, et tristique diam. In in risus vitae erat euismod auctor nec accumsan velit. Integer convallis massa id tincidunt pharetra. Curabitur eget rutrum leo, ut imperdiet arcu. Nam risus lacus, gravida aliquam pellentesque nec, convallis sed enim. 
+        </textarea>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-primary">Tallenna</button>
+    </div>
+</form>
+{% endblock %}

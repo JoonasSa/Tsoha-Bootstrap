@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Kurssit</h1>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Nimi</th>
+            <th>Tunniste</th>
+            <th>Opintopisteet</th>
+            <th>Opettaja</th>
+            <th>Status</th>
+            <th>Jakso</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <!-- Listataan pelit tähän -->
+        <tr>
+            <td><a href="{{base_path}}/kurssi">Linis</a></td>
+            <td>432987</td>
+            <td>5</td>
+            <td>Matti Möttönen</td>
+            <td><label class="label label-danger">kesken</label></td>
+            <td>3</td>
+            <th><a class="btn btn-default btn-sm" href="{{base_path}}/edit">Muokkaa</a></th>
+        </tr>
+    </tbody>
+</table>
+
+{% endblock %}
