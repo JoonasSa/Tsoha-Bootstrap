@@ -45,4 +45,12 @@ class Opettaja extends BaseModel {
         
         return null;
     }
+    
+    //EI TESTATTU = EI VÄLTTÄMÄTTÄ TOIMI
+    public function save() {
+        $query = DB::connection()->prepare('INSERT INTO Oppilas (etunimi, sukunimi, admin, password) VALUES (:etunimi, :sukunimi, :admin, :password) RETURNING opettajatunnus');
+        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'admin' => $this->admin, 'password' => $this->password));
+        $row = $query->fetch();
+        $this->opettajatunnus = $row['opettajatunnus'];
+    }
 }

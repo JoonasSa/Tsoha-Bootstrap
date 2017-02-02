@@ -88,4 +88,5 @@ class Suoritus extends BaseModel {
 
         return null;
     }
+    
 }

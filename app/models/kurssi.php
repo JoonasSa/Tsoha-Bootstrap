@@ -1,19 +1,19 @@
 <?php
 
 class Kurssi extends BaseModel {
-    
+
     public $kurssi_id, $nimi, $opintopisteet, $kuvaus;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
     }
-    
+
     public static function all() {
         $query = DB::connection()->prepare("SELECT * FROM Kurssi");
         $query->execute();
         $rows = $query->fetchAll();
         $kurssit = array();
-        
+
         foreach ($rows as $row) {
             $kurssit[] = new Kurssi(array(
                 "kurssi_id" => $row["kurssi_id"],
@@ -22,15 +22,15 @@ class Kurssi extends BaseModel {
                 "kuvaus" => $row["kuvaus"]
             ));
         }
-        
+
         return $kurssit;
     }
-    
+
     public static function find($id) {
         $query = DB::connection()->prepare("SELECT * FROM Kurssi WHERE kurssi_id = :id LIMIT 1");
         $query->execute(array("id" => $id));
         $row = $query->fetch();
-        
+
         if ($row) {
             $kurssi = new Kurssi(array(
                 "kurssi_id" => $row["kurssi_id"],
@@ -40,18 +40,15 @@ class Kurssi extends BaseModel {
             ));
             return $kurssi;
         }
-        
+
         return null;
     }
-    
-    public function save(){
-    // Lisätään RETURNING id tietokantakyselymme loppuun, niin saamme lisätyn rivin id-sarakkeen arvon
-    $query = DB::connection()->prepare('INSERT INTO Kurssi (nimi, opintopisteet, kuvaus) VALUES (:nimi, :opintopisteet, :kuvaus) RETURNING kurssi_id');
-    $query->execute(array('nimi' => $this->nimi, 'opintopisteet' => $this->opintopisteet, 'kuvaus' => $this->kuvaus));
-    // Haetaan kyselyn tuottama rivi, joka sisältää lisätyn rivin id-sarakkeen arvon
-    $row = $query->fetch();
-    // Asetetaan lisätyn rivin id-sarakkeen arvo oliomme id-attribuutin arvoksi
-    $this->kurssi_id = $row['kurssi_id'];
-  }
+
+    public function save() {
+        $query = DB::connection()->prepare('INSERT INTO Kurssi (nimi, opintopisteet, kuvaus) VALUES (:nimi, :opintopisteet, :kuvaus) RETURNING kurssi_id');
+        $query->execute(array('nimi' => $this->nimi, 'opintopisteet' => $this->opintopisteet, 'kuvaus' => $this->kuvaus));
+        $row = $query->fetch();
+        $this->kurssi_id = $row['kurssi_id'];
+    }
 
 }
