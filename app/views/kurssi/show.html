@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+<h1>{{kurssi.nimi}}</h1>
+<p>
+    <button class="btn btn-danger">Poista</button> <a href="{{base_path}}/edit" class="btn btn-default">Muokkaa</a>
+</p>
+
+<ul>
+    <li><strong>Tunniste:</strong> {{kurssi.kurssi_id}}</li>
+    <li><strong>Opintopisteet:</strong> {{kurssi.opintopisteet}}</li>
+</ul>
+
+<p>{{kurssi.kuvaus}}</p>
+{% endblock %}

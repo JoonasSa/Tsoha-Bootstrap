@@ -11,25 +11,22 @@
             <th>Nimi</th>
             <th>Tunniste</th>
             <th>Opintopisteet</th>
-            <th>Opettaja</th>
-            <th>Status</th>
-            <th>Jakso</th>
             <th></th>
         </tr>
     </thead>
 
     <tbody>
-        <!-- Listataan pelit tähän -->
+        {% for kurssi in kurssit %}
         <tr>
-            <td><a href="{{base_path}}/kurssi">Linis</a></td>
-            <td>432987</td>
-            <td>5</td>
-            <td>Matti Möttönen</td>
-            <td><label class="label label-danger">kesken</label></td>
-            <td>3</td>
+            <td><a href="{{base_path}}/kurssi/show/{{kurssi.kurssi_id}}">{{kurssi.nimi}}</a></td>
+            <td>{{kurssi.kurssi_id}}</td>
+            <td>{{kurssi.opintopisteet}}</td>
             <th><a class="btn btn-default btn-sm" href="{{base_path}}/edit">Muokkaa</a></th>
         </tr>
+        {% endfor %}
     </tbody>
 </table>
+
+<a class="btn btn-default btn-sm" href="{{base_path}}/kurssi/new">Lisää uusi kurssi</a>
 
 {% endblock %}

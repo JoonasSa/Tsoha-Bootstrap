@@ -1,25 +1,37 @@
 <?php
 
-  $routes->get('/', function() {
+$routes->get('/', function() {
     HelloWorldController::index();
-  });
+});
 
-  $routes->get('/hiekkalaatikko', function() {
+$routes->get('/hiekkalaatikko', function() {
     HelloWorldController::sandbox();
-  });
-  
-  $routes->get('/kurssit', function() {
-    HelloWorldController::kurssit();
-  });
+});
 
-  $routes->get('/kurssi', function() {
-    HelloWorldController::kurssi();
-  });
-  
-  $routes->get('/login', function() {
+$routes->get('/kurssi/kurssit', function() {
+    KurssiController::index();
+});
+
+$routes->get('/kurssi/show/:id', function($id) {
+    KurssiController::show($id);
+});
+
+$routes->get('/kurssi/new', function() {
+    KurssiController::create();
+});
+
+$routes->post('/kurssi', function() {
+    KurssiController::store();
+});
+
+$routes->get('/toteutus/toteutukset', function() {
+    ToteutusController::index();
+});
+
+$routes->get('/login', function() {
     HelloWorldController::login();
-  });
-  
-  $routes->get('/edit', function() {
+});
+
+$routes->get('/edit', function() {
     HelloWorldController::edit();
-  });
+});

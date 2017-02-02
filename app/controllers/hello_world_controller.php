@@ -3,18 +3,7 @@
 class HelloWorldController extends BaseController {
 
     public static function index() {
-        // make-metodi renderöi app/views-kansiossa sijaitsevia tiedostoja
         View::make('home.html');
-    }
-
-    public static function kurssit() {
-        // Testaa koodiasi täällä
-        View::make("kurssit.html");
-    }
-
-    public static function kurssi() {
-        // Testaa koodiasi täällä
-        View::make("kurssi.html");
     }
 
     public static function login() {
@@ -26,8 +15,12 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        // Testaa koodiasi täällä
-        View::make("helloworld.html");
+        $a = Opettaja::find(1);
+        $b = Opettaja::all();
+        
+        Kint::dump($a);
+        Kint::dump($b);
+        View::make('hiekkalaatikko.html');
     }
 
 }
