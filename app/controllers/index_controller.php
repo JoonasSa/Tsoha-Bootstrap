@@ -1,6 +1,6 @@
 <?php
 
-class HelloWorldController extends BaseController {
+class IndexController extends BaseController {
 
     public static function index() {
         View::make('home.html');
@@ -15,11 +15,15 @@ class HelloWorldController extends BaseController {
     }
 
     public static function sandbox() {
-        $a = Opettaja::find(1);
-        $b = Opettaja::all();
+        $b = Suoritus::all();
+        $c = Suoritus::findByOppilas(1);
+        $d = Suoritus::findByToteutus(1);
+        $e = Suoritus::findByOppilasAndToteutus(1, 1);
         
-        Kint::dump($a);
         Kint::dump($b);
+        Kint::dump($c);
+        Kint::dump($d);
+        Kint::dump($e);
         View::make('hiekkalaatikko.html');
     }
 

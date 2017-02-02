@@ -1,11 +1,19 @@
 <?php
 
 $routes->get('/', function() {
-    HelloWorldController::index();
+    IndexController::index();
 });
 
 $routes->get('/hiekkalaatikko', function() {
-    HelloWorldController::sandbox();
+    IndexController::sandbox();
+});
+
+$routes->get('/login', function() {
+    IndexController::login();
+});
+
+$routes->get('/edit', function() {
+    IndexController::edit();
 });
 
 $routes->get('/kurssi/kurssit', function() {
@@ -28,10 +36,6 @@ $routes->get('/toteutus/toteutukset', function() {
     ToteutusController::index();
 });
 
-$routes->get('/login', function() {
-    HelloWorldController::login();
-});
-
-$routes->get('/edit', function() {
-    HelloWorldController::edit();
+$routes->get('/suoritus/suoritukset', function() {
+    SuoritusController::index();
 });
