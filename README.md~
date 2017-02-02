@@ -13,6 +13,6 @@ Järjestelmän on tarkoitus toimia koulun kurssi-ilmoittautumisjärjestelmänä.
 
 * [Home](http://sarapajo.users.cs.helsinki.fi/tsoha/)
 * [Login](http://sarapajo.users.cs.helsinki.fi/tsoha/login)
-* [Kurssit](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssi/kurssit)
-* [Yksittäinen kurssi](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssi/show/1)
+* [Kurssit](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssit)
+* [Yksittäinen kurssi](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssi)
 * [Muokkaa](http://sarapajo.users.cs.helsinki.fi/tsoha/edit)
