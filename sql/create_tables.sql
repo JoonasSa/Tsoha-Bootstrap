@@ -28,21 +28,21 @@ CREATE TABLE Toteutus(
 	alkupvm date NOT NULL,
 	koepvm date,
 	info text,
-	vastuu_id integer REFERENCES Opettaja(opettajatunnus),
-	kurssi_id integer REFERENCES Kurssi(kurssi_id)
+	vastuu_id integer REFERENCES Opettaja(opettajatunnus) ON DELETE CASCADE,
+	kurssi_id integer REFERENCES Kurssi(kurssi_id) ON DELETE CASCADE
 );
 
 CREATE TABLE Suoritus(
 	pvm date NOT NULL,
 	arvosana smallint NOT NULL,
-	tote_id integer REFERENCES Toteutus(tote_id),
-	suorittaja integer REFERENCES Oppilas(opiskelijanumero),
+	tote_id integer REFERENCES Toteutus(tote_id) ON DELETE CASCADE,
+	suorittaja integer REFERENCES Oppilas(opiskelijanumero) ON DELETE CASCADE,
 	PRIMARY KEY (tote_id, suorittaja)
 );
 
 CREATE TABLE Ilmoittautuminen(
 	ilmoaika timestamp DEFAULT NOW(),
-	tote_id integer REFERENCES Toteutus(tote_id),
-        ilmoittautuja integer REFERENCES Oppilas(opiskelijanumero),
+	tote_id integer REFERENCES Toteutus(tote_id) ON DELETE CASCADE,
+        ilmoittautuja integer REFERENCES Oppilas(opiskelijanumero) ON DELETE CASCADE,
 	PRIMARY KEY (ilmoittautuja, tote_id)
 );

@@ -28,6 +28,18 @@ $routes->get('/kurssi/new', function() {
     KurssiController::create();
 });
 
+$routes->get('/kurssi/:id/edit', function($id) {
+    KurssiController::edit($id);
+});
+
+$routes->post('/kurssi/:id/edit', function($id) {
+    KurssiController::update($id);
+});
+
+$routes->post('/kurssi/:id/destroy', function($id) {
+    KurssiController::destroy($id);
+});
+
 $routes->post('/kurssi', function() {
     KurssiController::store();
 });

@@ -50,5 +50,14 @@ class Kurssi extends BaseModel {
         $row = $query->fetch();
         $this->kurssi_id = $row['kurssi_id'];
     }
+    
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Kurssi SET (nimi, opintopisteet, kuvaus) VALUES (:nimi, :opintopisteet, :kuvaus) WHERE kurssi_id = :kurssi_id');
+        $query->execute(array('nimi' => $this->nimi, 'opintopisteet' => $this->opintopisteet, 'kuvaus' => $this->kuvaus));
+    }
 
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Kurssi WHERE kurssi_id = :kurssi_id');
+        $query->execute(array('kurssi_id' => $this->kurssi_id));
+    }
 }

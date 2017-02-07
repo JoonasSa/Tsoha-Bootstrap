@@ -1,21 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
   <h1>Lisää kurssi</h1>
+  
+  {% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
 
   <form method="post" action="{{base_path}}/kurssi">
     <div class="form-group">
       <label>Nimi</label>
-      <input name="nimi" class="form-control" type="text">
+      <input name="nimi" class="form-control" value="{{attributes.nimi}}" type="text">
     </div>
 
     <div class="form-group">
       <label>Opintopisteet</label>
-      <input name="opintopisteet" class="form-control" type="text">
+      <input name="opintopisteet" class="form-control" value="{{attributes.opintopisteet}}" type="text">
     </div>
 
     <div class="form-group">
       <label>Kuvaus</label>
-      <textarea name="kuvaus" class="form-control"></textarea>
+      <textarea name="kuvaus" class="form-control" >{{attributes.kuvaus}}</textarea>
     </div>
 
     <div class="form-group">

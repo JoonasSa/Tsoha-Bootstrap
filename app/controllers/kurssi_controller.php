@@ -12,21 +12,59 @@ class KurssiController extends BaseController {
         View::make("kurssi/show.html", array('kurssi' => $kurssi));
     }
 
+    public static function edit($id) {
+        $kurssi = Kurssi::find($id);
+        View::make("kurssi/edit.html", array('kurssi' => $kurssi));
+    }
+
     public static function create() {
         View::make("kurssi/new.html");
     }
 
     public static function store() {
         $params = $_POST;
-
         $kurssi = new Kurssi(array(
             'nimi' => $params['nimi'],
             'opintopisteet' => $params['opintopisteet'],
             'kuvaus' => $params['kuvaus']
         ));
-        $kurssi->save();
-        
-        Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssi on lisätty tietokantaan.'));
+        $errors = KurssiController::getErrors($params, $kurssi);
+        if (count($errors) == 0) {
+            $kurssi->save();
+            Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssi on lisätty tietokantaan.'));
+        } else {
+            View::make('kurssi/new.html', array('errors' => $errors, 'attributes' => $params));
+        }
     }
 
+    public static function update($id) {
+        $params = $_POST;
+        $attributes = array(
+            'kurssi_id' => $id,
+            'nimi' => $params['nimi'],
+            'opintopisteet' => $params['opintopisteet'],
+            'kuvaus' => $params['kuvaus']
+        );
+        $kurssi = new Kurssi($attributes);
+        $errors = KurssiController::getErrors($params, $kurssi);
+        if (count($errors) == 0) {
+            $kurssi->update();
+            Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssia on muokattu onnistuneesti!'));
+        } else {
+            View::make('kurssi/edit.html', array('errors' => $errors, 'attributes' => $params));
+        }
+    }
+
+    public static function destroy($kurssi_id) {
+        $kurssi = new Kurssi(array('kurssi_id' => $kurssi_id));
+        $kurssi->destroy();
+        Redirect::to('/kurssi/kurssit', array('message' => 'Kurssi on poistettu onnistuneesti!'));
+    }
+
+    private static function getErrors($params, $kurssi) {
+        $errors = array();
+        $errors = $kurssi->validate_string("nimi", $params['nimi'], 3, 60, $errors);
+        $errors = $kurssi->validate_number("opintopisteet", $params['opintopisteet'], 1, 25, $errors);
+        return $errors;
+    }
 }
