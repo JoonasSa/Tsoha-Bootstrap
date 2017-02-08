@@ -8,10 +8,6 @@ $routes->get('/hiekkalaatikko', function() {
     IndexController::sandbox();
 });
 
-$routes->get('/login', function() {
-    IndexController::login();
-});
-
 $routes->get('/edit', function() {
     IndexController::edit();
 });
@@ -50,4 +46,12 @@ $routes->get('/toteutus/toteutukset', function() {
 
 $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
+});
+
+$routes->get('/login', function(){
+  UserController::login();
+});
+
+$routes->post('/login', function(){
+  UserController::handle_login();
 });

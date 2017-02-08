@@ -28,31 +28,34 @@ class KurssiController extends BaseController {
             'opintopisteet' => $params['opintopisteet'],
             'kuvaus' => $params['kuvaus']
         ));
+        
         $errors = KurssiController::getErrors($params, $kurssi);
         if (count($errors) == 0) {
             $kurssi->save();
             Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssi on lisätty tietokantaan.'));
         } else {
-            View::make('kurssi/new.html', array('errors' => $errors, 'attributes' => $params));
+            View::make('kurssi/new.html', array('errors' => $errors, 'kurssi' => $params));
         }
     }
 
-    public static function update($id) {
+    public static function update($kurssi_id) {
         $params = $_POST;
         $attributes = array(
-            'kurssi_id' => $id,
+            'kurssi_id' => $kurssi_id,
             'nimi' => $params['nimi'],
             'opintopisteet' => $params['opintopisteet'],
             'kuvaus' => $params['kuvaus']
         );
+
         $kurssi = new Kurssi($attributes);
         $errors = KurssiController::getErrors($params, $kurssi);
         if (count($errors) == 0) {
             $kurssi->update();
             Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssia on muokattu onnistuneesti!'));
         } else {
-            View::make('kurssi/edit.html', array('errors' => $errors, 'attributes' => $params));
-        }
+            //Bugi: kadottaa kurssi_id:n tokan update virheen jälkeen
+            View::make('kurssi/edit.html', array('errors' => $errors, 'kurssi' => $params, 'kurssi_id' => $kurssi_id));
+        }         
     }
 
     public static function destroy($kurssi_id) {

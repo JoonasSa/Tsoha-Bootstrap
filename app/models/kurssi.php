@@ -22,7 +22,6 @@ class Kurssi extends BaseModel {
                 "kuvaus" => $row["kuvaus"]
             ));
         }
-
         return $kurssit;
     }
 
@@ -40,7 +39,6 @@ class Kurssi extends BaseModel {
             ));
             return $kurssi;
         }
-
         return null;
     }
 
@@ -52,8 +50,8 @@ class Kurssi extends BaseModel {
     }
     
     public function update() {
-        $query = DB::connection()->prepare('UPDATE Kurssi SET (nimi, opintopisteet, kuvaus) VALUES (:nimi, :opintopisteet, :kuvaus) WHERE kurssi_id = :kurssi_id');
-        $query->execute(array('nimi' => $this->nimi, 'opintopisteet' => $this->opintopisteet, 'kuvaus' => $this->kuvaus));
+        $query = DB::connection()->prepare('UPDATE Kurssi SET nimi = :nimi, opintopisteet = :opintopisteet, kuvaus = :kuvaus WHERE kurssi_id = :kurssi_id');
+        $query->execute(array('kurssi_id' => $this->kurssi_id, 'nimi' => $this->nimi, 'opintopisteet' => $this->opintopisteet, 'kuvaus' => $this->kuvaus));
     }
 
     public function destroy() {
