@@ -1,4 +1,9 @@
 -- Lisää CREATE TABLE lauseet tähän tiedostoon
+CREATE TABLE Kayttaja(
+        id SERIAL PRIMARY KEY,
+        username varchar(61) NOT NULL
+);
+
 CREATE TABLE Kurssi(
 	kurssi_id SERIAL PRIMARY KEY,
 	nimi varchar(60) NOT NULL,

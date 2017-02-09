@@ -12,7 +12,8 @@ Järjestelmän on tarkoitus toimia koulun kurssi-ilmoittautumisjärjestelmänä.
 ## Sivu linkkejä
 
 * [Home](http://sarapajo.users.cs.helsinki.fi/tsoha/)
-* [Login](http://sarapajo.users.cs.helsinki.fi/tsoha/login)
 * [Kurssit](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssi/kurssit)
 * [Yksittäinen kurssi](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssi/show/1)
-* [Muokkaa](http://sarapajo.users.cs.helsinki.fi/tsoha/edit)
+* [Muokkaa](http://sarapajo.users.cs.helsinki.fi/tsoha/kurssi/1/edit)
+Käyttäjätunnus: etunimi = Testi, sukunimi = Jäbä, salasana = salasana
+* [Login](http://sarapajo.users.cs.helsinki.fi/tsoha/user/login)

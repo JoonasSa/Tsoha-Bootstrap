@@ -48,10 +48,18 @@ $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
 });
 
-$routes->get('/login', function(){
-  UserController::login();
+$routes->get('/user/login', function() {
+    KayttajaController::login();
 });
 
-$routes->post('/login', function(){
-  UserController::handle_login();
+$routes->post('/user/login', function() {
+    KayttajaController::handle_login();
+});
+
+$routes->get('/user/signup', function() {
+    KayttajaController::signup();
+});
+
+$routes->post('/user/signup', function() {
+    KayttajaController::handle_signup();
 });

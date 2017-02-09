@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+  <h1>Kirjaudu sisään</h1>
+
+  <form method="post" action="{{base_path}}/user/login">
+    <div class="form-group">
+      <label>Etunimi</label>
+      <input name="etunimi" class="form-control" value="{{attributes.etunimi}}" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Sukunimi</label>
+      <input name="sukunimi" class="form-control" value="{{attributes.sukunimi}}" type="text">
+    </div>
+
+    <div class="form-group">
+      <label>Salasana</label>
+      <input name="password" class="form-control" value="{{attributes.salasana}}" type="text">
+    </div>
+
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Lisää</button>
+    </div>
+  </form>
+{% endblock %}

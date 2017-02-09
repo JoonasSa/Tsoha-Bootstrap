@@ -54,7 +54,7 @@ class KurssiController extends BaseController {
             Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssia on muokattu onnistuneesti!'));
         } else {
             //Bugi: kadottaa kurssi_id:n tokan update virheen jälkeen
-            View::make('kurssi/edit.html', array('errors' => $errors, 'kurssi' => $params, 'kurssi_id' => $kurssi_id));
+            View::make('kurssi/edit.html', array('errors' => $errors, 'kurssi' => $params, 'id' => $kurssi_id));
         }         
     }
 
