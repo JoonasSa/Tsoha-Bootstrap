@@ -11,15 +11,13 @@ class IndexController extends BaseController {
     }
 
     public static function sandbox() {
-        $b = Suoritus::all();
-        $c = Suoritus::findByOppilas(1);
-        $d = Suoritus::findByToteutus(1);
-        $e = Suoritus::findByOppilasAndToteutus(1, 1);
+        $a = $_SESSION['user'];
+        //$c = $a->id;
+        $b = Kayttaja::find($a);
         
+        Kint::dump($a);
         Kint::dump($b);
-        Kint::dump($c);
-        Kint::dump($d);
-        Kint::dump($e);
+        //Kint::dump($c);
         View::make('hiekkalaatikko.html');
     }
 

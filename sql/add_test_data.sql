@@ -1,7 +1,6 @@
 -- Lisää INSERT INTO lauseet tähän tiedostoon
 INSERT INTO Kayttaja(username)
-VALUES ('Matti Niemi', 'Pekka Mutka', 'Lotta Suominen', 'Hermanni Pallovasara',
-'Testi Jäbä');
+VALUES ('Testi Jäbä');
 
 INSERT INTO Kurssi(nimi, opintopisteet, kuvaus) 
 VALUES ('Linis 1', 5, 'Matikkaa'),
