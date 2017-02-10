@@ -32,6 +32,9 @@
             <td>{{tote.info}}</td>
             <td>kurssi linkki</td>
             <th><a class="btn btn-default btn-sm" href="{{base_path}}/edit">Muokkaa</a></th>
+            {% if user_logged_in %}
+            <th><a href="" class="btn btn-default">Ilmoittaudu kurssille</a></th>
+            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

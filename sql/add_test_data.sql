@@ -13,9 +13,9 @@ VALUES ('Matti', 'Niemi', 145, 'hunter2'),
 ('Pekka', 'Mutka', 17, 'salasana');
 
 INSERT INTO Opettaja(etunimi, sukunimi, admin, password) 
-VALUES ('Lotta', 'Suominen', false, 'salakala'),
-('Hermanni', 'Pallovasara', true, 'spooky123'),
-('Testi', 'Jäbä', true, 'salasana');
+VALUES ('Testi', 'Jäbä', true, 'salasana'),
+('Lotta', 'Suominen', false, 'salakala'),
+('Hermanni', 'Pallovasara', true, 'spooky123');
 
 INSERT INTO Toteutus(periodi, alkupvm, info, vastuu_id, kurssi_id) 
 VALUES (2, NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 'Paha kurssi', 1, 1),

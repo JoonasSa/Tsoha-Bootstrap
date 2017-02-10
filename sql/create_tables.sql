@@ -1,4 +1,6 @@
 -- Lisää CREATE TABLE lauseet tähän tiedostoon
+
+-- Muuta rakenne kaikki id:t Kayttajalta 
 CREATE TABLE Kayttaja(
         id SERIAL PRIMARY KEY,
         username varchar(61) NOT NULL

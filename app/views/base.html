@@ -45,10 +45,9 @@
                     </ul>
                     {% if user_logged_in %}
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="{{base_path}}">{{user_logged_in.name}} kirjaudu ulos</a></li>
+                        <li><a href="{{base_path}}">{{user_logged_in.name}} Kirjaudu ulos</a></li>
                     </ul>
-                    {% endif %}
-                    {% if not user_logged_in %}
+                    {% else %}
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="{{base_path}}/user/login">Kirjaudu sisään</a></li>
                         <li><a href="{{base_path}}/user/signup">Luo uusi käyttäjä</a></li>
