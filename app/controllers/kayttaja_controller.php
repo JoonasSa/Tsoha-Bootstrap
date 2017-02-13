@@ -5,7 +5,7 @@ class KayttajaController extends BaseController {
     public static function login() {
         View::make('user/login.html');
     }
-    
+
     public static function signup() {
         View::make('user/signup.html');
     }
@@ -22,10 +22,15 @@ class KayttajaController extends BaseController {
         }
     }
 
+    public static function handle_logout() {
+        $_SESSION['user'] = null;
+        Redirect::to('/user/login', array('message' => 'Olet kirjautunut ulos!'));
+    }
+
     public static function handle_signup() {
         $params = $_POST;
         //eka pitää luoda uusi oppilas tai opettaja, ja validoida se HUOM! pitää olla uniikki: etunimi + sukunimi + password kombinaatio
-        $user = new Kayttaja(array('username' => $params['etunimi'] . ' ' .  $params['sukunimi']));
+        $user = new Kayttaja(array('username' => $params['etunimi'] . ' ' . $params['sukunimi'], 'password' => $params['salasana'], 'teacher' => $params['opettaja']));
         $errors = KayttajaController::getErrors($params);
         if (count($errors) == 0) {
             $new = $user->save();
@@ -35,11 +40,12 @@ class KayttajaController extends BaseController {
             View::make('user/signup.html', array('errors' => $errors, 'attributes' => $params));
         }
     }
-    
+
     public static function getErrors($params) {
         $errors = array();
         $errors = BaseModel::validate_string("etunimi", $params['etunimi'], 2, 30, $errors);
         $errors = BaseModel::validate_string("sukunimi", $params['sukunimi'], 2, 30, $errors);
         return $errors;
     }
+
 }

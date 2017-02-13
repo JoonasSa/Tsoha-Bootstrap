@@ -2,7 +2,7 @@
 
 class Oppilas extends BaseModel {
 
-    public $opiskelijanumero, $etunimi, $sukunimi, $opintopisteet, $password;
+    public $opiskelijanumero, $etunimi, $sukunimi, $opintopisteet;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
@@ -19,8 +19,7 @@ class Oppilas extends BaseModel {
                 "opiskelijanumero" => $row["opiskelijanumero"],
                 "etunimi" => $row["etunimi"],
                 "sukunimi" => $row["sukunimi"],
-                "opintopisteet" => $row["opintopisteet"],
-                "password" => $row["password"]
+                "opintopisteet" => $row["opintopisteet"]
             ));
         }
 
@@ -37,8 +36,7 @@ class Oppilas extends BaseModel {
                 "opiskelijanumero" => $row["opiskelijanumero"],
                 "etunimi" => $row["etunimi"],
                 "sukunimi" => $row["sukunimi"],
-                "opintopisteet" => $row["opintopisteet"],
-                "password" => $row["password"]
+                "opintopisteet" => $row["opintopisteet"]
             ));
             return $student;
         }
@@ -48,10 +46,8 @@ class Oppilas extends BaseModel {
 
     //EI TESTATTU = EI VÄLTTÄMÄTTÄ TOIMI
     public function save() {
-        $query = DB::connection()->prepare('INSERT INTO Oppilas (etunimi, sukunimi, opintopisteet, password) VALUES (:etunimi, :sukunimi, :opintopisteet, :password) RETURNING opiskelijanumero');
-        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'opintopisteet' => $this->opintopisteet, 'password' => $this->password));
-        $row = $query->fetch();
-        $this->opiskelijanumero = $row['opiskelijanumero'];
+        $query = DB::connection()->prepare('INSERT INTO Oppilas (etunimi, sukunimi, opintopisteet, opiskelijatunnus) VALUES (:etunimi, :sukunimi, :opintopisteet, :opiskelijatunnus)');
+        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'opintopisteet' => $this->opintopisteet, 'opiskelijatunnus' => $this->opiskelijatunnus));
     }
 
 }

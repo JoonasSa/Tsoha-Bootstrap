@@ -63,3 +63,7 @@ $routes->get('/user/signup', function() {
 $routes->post('/user/signup', function() {
     KayttajaController::handle_signup();
 });
+
+$routes->post('/user/logout', function() {
+    KayttajaController::handle_logout();
+});

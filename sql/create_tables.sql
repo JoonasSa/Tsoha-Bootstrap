@@ -3,7 +3,25 @@
 -- Muuta rakenne kaikki id:t Kayttajalta 
 CREATE TABLE Kayttaja(
         id SERIAL PRIMARY KEY,
-        username varchar(61) NOT NULL
+        username varchar(61) NOT NULL,
+        password varchar(50) NOT NULL,
+        teacher boolean NOT NULL
+);
+
+CREATE TABLE Oppilas(
+	etunimi varchar(30) NOT NULL,
+	sukunimi varchar(30) NOT NULL,
+	opintopisteet smallint DEFAULT 0,
+	opiskelijanumero integer REFERENCES Kayttaja(id) ON DELETE CASCADE,
+        PRIMARY KEY(opiskelijanumero)
+);
+
+CREATE TABLE Opettaja(
+        etunimi varchar(30) NOT NULL,
+        sukunimi varchar(30) NOT NULL,
+        admin boolean DEFAULT false,
+        opettajatunnus integer REFERENCES Kayttaja(id) ON DELETE CASCADE,
+        PRIMARY KEY(opettajatunnus)
 );
 
 CREATE TABLE Kurssi(
@@ -11,22 +29,6 @@ CREATE TABLE Kurssi(
 	nimi varchar(60) NOT NULL,
 	opintopisteet smallint NOT NULL,
 	kuvaus text
-);
-
-CREATE TABLE Oppilas(
-	opiskelijanumero SERIAL PRIMARY KEY,
-	etunimi varchar(30) NOT NULL,
-	sukunimi varchar(30) NOT NULL,
-	opintopisteet smallint DEFAULT 0,
-	password varchar(50) NOT NULL
-);
-
-CREATE TABLE Opettaja(
-        opettajatunnus SERIAL PRIMARY KEY,
-        etunimi varchar(30) NOT NULL,
-        sukunimi varchar(30) NOT NULL,
-        admin boolean DEFAULT false,
-        password varchar(50) NOT NULL
 );
 
 CREATE TABLE Toteutus(

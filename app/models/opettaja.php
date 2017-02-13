@@ -2,7 +2,7 @@
 
 class Opettaja extends BaseModel {
     
-    public $opettajatunnus, $etunimi, $sukunimi, $admin, $password;
+    public $opettajatunnus, $etunimi, $sukunimi, $admin;
 
     public function __construct($attributes) {
         parent::__construct($attributes);
@@ -19,8 +19,7 @@ class Opettaja extends BaseModel {
                 "opettajatunnus" => $row["opettajatunnus"],
                 "etunimi" => $row["etunimi"],
                 "sukunimi" => $row["sukunimi"],
-                "admin" => $row["admin"],
-                "password" => $row["password"]
+                "admin" => $row["admin"]
             ));
         }
         
@@ -37,8 +36,7 @@ class Opettaja extends BaseModel {
                 "opettajatunnus" => $row["opettajatunnus"],
                 "etunimi" => $row["etunimi"],
                 "sukunimi" => $row["sukunimi"],
-                "admin" => $row["admin"],
-                "password" => $row["password"]
+                "admin" => $row["admin"]
             ));
             return $opettaja;
         }
@@ -48,9 +46,7 @@ class Opettaja extends BaseModel {
     
     //EI TESTATTU = EI VÄLTTÄMÄTTÄ TOIMI
     public function save() {
-        $query = DB::connection()->prepare('INSERT INTO Opettaja (etunimi, sukunimi, admin, password) VALUES (:etunimi, :sukunimi, :admin, :password) RETURNING opettajatunnus');
-        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'admin' => $this->admin, 'password' => $this->password));
-        $row = $query->fetch();
-        $this->opettajatunnus = $row['opettajatunnus'];
+        $query = DB::connection()->prepare('INSERT INTO Opettaja (etunimi, sukunimi, admin, opettajatunnus) VALUES (:etunimi, :sukunimi, :admin, :opettajatunnus)');
+        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'admin' => $this->admin, 'opettajatunnus' => $this->opettajatunnus));
     }
 }
