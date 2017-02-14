@@ -5,7 +5,8 @@ CREATE TABLE Kayttaja(
         id SERIAL PRIMARY KEY,
         username varchar(61) NOT NULL,
         password varchar(50) NOT NULL,
-        teacher boolean NOT NULL
+        teacher boolean NOT NULL,
+        admin boolean DEFAULT false
 );
 
 CREATE TABLE Oppilas(

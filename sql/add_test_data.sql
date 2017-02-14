@@ -1,7 +1,7 @@
 -- Lisää INSERT INTO lauseet tähän tiedostoon
-INSERT INTO Kayttaja(username, password, teacher)
-VALUES ('Testi Jäbä', 'salasana', true), ('Lotta Suominen', 'salakala', true), ('Hermanni Pallovasara', 'spurdo', true),
-('Matti Niemi', 'hunter2', false), ('Pekka Mutka', 'spooky123', false);
+INSERT INTO Kayttaja(username, password, admin, teacher)
+VALUES ('Testi Jäbä', 'salasana', true, true), ('Lotta Suominen', 'salakala', false, true), ('Hermanni Pallovasara', 'spurdo', false, true),
+('Matti Niemi', 'hunter2', false, false), ('Pekka Mutka', 'spooky123', false, false);
 
 INSERT INTO Kurssi(nimi, opintopisteet, kuvaus) 
 VALUES ('Linis 1', 5, 'Matikkaa'),

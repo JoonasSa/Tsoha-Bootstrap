@@ -16,15 +16,26 @@ class BaseController {
     }
 
     //EI TOIMI
-    public static function is_student() {
-        $kayttaja = self::get_user_logged_in();
-        return !$kayttaja->teacher;
-    }
-
-    //EI TOIMI
     public static function is_teacher() {
-        $kayttaja = self::get_user_logged_in();
-        return $kayttaja->teacher;
+        if (isset($_SESSION['teacher'])) {
+            return $_SESSION['teacher'];
+        }
+        return null;
+    }
+    
+    //EI TOIMI
+    public static function is_student() {
+        if (isset($_SESSION['teacher'])) {
+            return null;
+        }
+        return true;
     }
 
+
+    public static function is_admin() {
+        if (isset($_SESSION['admin'])) {
+            return $_SESSION['admin'];
+        }
+        return null;
+    }
 }

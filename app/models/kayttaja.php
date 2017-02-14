@@ -2,17 +2,34 @@
 
 class Kayttaja extends BaseModel {
 
-    public $id, $username, $password, $teacher;
+    public $id, $username, $password, $teacher, $admin;
 
     public function find($id) {
         $query = DB::connection()->prepare("SELECT * FROM Kayttaja WHERE id = :id LIMIT 1");
         $query->execute(array("id" => $id));
         $row = $query->fetch();
         if ($row) {
-            $user = new Kayttaja(array('id' => $row['id'], 'username' => $row['username'], 'teacher' => $row['teacher']));
+            $user = new Kayttaja(array('id' => $row['id'], 'username' => $row['username'], "admin" => $row['admin'], 'teacher' => $row['teacher']));
             return $user;
         }
         return null;
+    }
+    
+    public static function all() {
+        $query = DB::connection()->prepare("SELECT * FROM Kayttaja");
+        $query->execute();
+        $rows = $query->fetchAll();
+        $kurssit = array();
+
+        foreach ($rows as $row) {
+            $kurssit[] = new Kurssi(array(
+                "id" => $row["id"],
+                "password" => $row["password"],
+                "admin" => $row['admin'],
+                "teacher" => $row["teacher"]
+            ));
+        }
+        return $kurssit;
     }
 
     public function authenticate($etunimi, $sukunimi, $password) {
@@ -21,20 +38,27 @@ class Kayttaja extends BaseModel {
         $query->execute(array("username" => $username, 'password' => $password));
         $row = $query->fetch();
         if ($row) {
-            $kayttaja = new Kayttaja(array('id' => $row['id'], 'username' => $username, 'teacher' => $row['teacher']));
+            $kayttaja = new Kayttaja(array('id' => $row['id'], 'username' => $username, 'admin' => $row['admin'], 'teacher' => $row['teacher']));
             return $kayttaja;
         }
         return null;
     }
-
+    
+    //EI TOIMI OPISKELIJOILLE...
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (username, password, teacher) VALUES (:username, :password, :teacher) RETURNING id');
+        if ($this->teacher) {
+            $query->bindValue('teacher', true, \PDO::PARAM_BOOL);
+        } else {
+            $query->bindValue('teacher', false, \PDO::PARAM_BOOL);
+        }
         $query->execute(array('username' => $this->username, 'password' => $this->password, 'teacher' => $this->teacher));
         $row = $query->fetch();
         $this->id = $row['id'];
         return $this;
     }
 
+    /*
     private static function getIdentity($row) {
         $user_id = $row['id'];
         if ($row['teacher'] === true) {
@@ -56,5 +80,5 @@ class Kayttaja extends BaseModel {
         }
         return null;
     }
-
+    */
 }

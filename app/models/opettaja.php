@@ -46,7 +46,7 @@ class Opettaja extends BaseModel {
     
     //EI TESTATTU = EI VÄLTTÄMÄTTÄ TOIMI
     public function save() {
-        $query = DB::connection()->prepare('INSERT INTO Opettaja (etunimi, sukunimi, admin, opettajatunnus) VALUES (:etunimi, :sukunimi, :admin, :opettajatunnus)');
-        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'admin' => $this->admin, 'opettajatunnus' => $this->opettajatunnus));
+        $query = DB::connection()->prepare('INSERT INTO Opettaja (etunimi, sukunimi, opettajatunnus) VALUES (:etunimi, :sukunimi, :opettajatunnus)');
+        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'opettajatunnus' => $this->opettajatunnus));
     }
 }

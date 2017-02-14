@@ -9,6 +9,11 @@ class KayttajaController extends BaseController {
     public static function signup() {
         View::make('user/signup.html');
     }
+    
+    public static function index() {
+        $kayttajat = Kayttaja::all();
+        View::make('user/all.html', array('users' => $kayttajat));
+    }
 
     public static function handle_login() {
         $params = $_POST;
@@ -18,6 +23,10 @@ class KayttajaController extends BaseController {
             View::make('user/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'attributes' => $params));
         } else {
             $_SESSION['user'] = $user->id;
+            $_SESSION['teacher'] = $user->teacher;
+            if ($user->teacher) {
+                $_SESSION['admin'] = $user->admin;
+            }
             Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $user->username . '!'));
         }
     }
@@ -29,11 +38,17 @@ class KayttajaController extends BaseController {
 
     public static function handle_signup() {
         $params = $_POST;
-        //eka pitää luoda uusi oppilas tai opettaja, ja validoida se HUOM! pitää olla uniikki: etunimi + sukunimi + password kombinaatio
-        $user = new Kayttaja(array('username' => $params['etunimi'] . ' ' . $params['sukunimi'], 'password' => $params['salasana'], 'teacher' => $params['opettaja']));
-        $errors = KayttajaController::getErrors($params);
+        $user = new Kayttaja(array('username' => $params['etunimi'] . ' ' . $params['sukunimi'], 'password' => $params['salasana'], 'teacher' => isset($params['opettaja'])));
+        $errors = self::getErrors($params);
         if (count($errors) == 0) {
             $new = $user->save();
+            if ($new->teacher) {
+                $opettaja = new Opettaja(array('etunimi' => $params['etunimi'], 'sukunimi' => $params['sukunimi'], 'opettajatunnus' => $new->id));
+                $opettaja->save();
+            } else {
+                $oppilas = new Oppilas(array('etunimi' => $params['etunimi'], 'sukunimi' => $params['sukunimi'], 'opintopisteet' => 0, 'opiskelijanumero' => $new->id));
+                $oppilas->save();
+            }
             $_SESSION['user'] = $new->id;
             Redirect::to('/', array('message' => 'Tervetuloa kurssijärjestelmään ' . $new->username . '!'));
         } else {
@@ -45,6 +60,7 @@ class KayttajaController extends BaseController {
         $errors = array();
         $errors = BaseModel::validate_string("etunimi", $params['etunimi'], 2, 30, $errors);
         $errors = BaseModel::validate_string("sukunimi", $params['sukunimi'], 2, 30, $errors);
+        $errors = BaseModel::validate_string("salasana", $params['salasana'], 4, 50, $errors);
         return $errors;
     }
 
