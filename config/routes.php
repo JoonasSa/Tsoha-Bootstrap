@@ -87,3 +87,7 @@ $routes->post('/user/logout', function() {
 $routes->get('/user/all', function() {
     KayttajaController::index();
 });
+
+$routes->get('/user/show/:id', function($id) {
+    KayttajaController::show($id);
+});

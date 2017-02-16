@@ -19,17 +19,18 @@ class Kayttaja extends BaseModel {
         $query = DB::connection()->prepare("SELECT * FROM Kayttaja");
         $query->execute();
         $rows = $query->fetchAll();
-        $kurssit = array();
+        $kayttajat = array();
 
         foreach ($rows as $row) {
-            $kurssit[] = new Kurssi(array(
+            $kayttajat[] = new Kayttaja(array(
                 "id" => $row["id"],
+                "username" => $row['username'],
                 "password" => $row["password"],
                 "admin" => $row['admin'],
                 "teacher" => $row["teacher"]
             ));
         }
-        return $kurssit;
+        return $kayttajat;
     }
 
     public function authenticate($etunimi, $sukunimi, $password) {

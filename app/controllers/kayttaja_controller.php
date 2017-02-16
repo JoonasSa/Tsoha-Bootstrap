@@ -9,6 +9,11 @@ class KayttajaController extends BaseController {
     public static function signup() {
         View::make('user/signup.html');
     }
+    
+    public static function show($id) {
+        $kayttaja = Kayttaja::find($id);
+        View::make("user/show.html", array('user' => $kayttaja));
+    }
 
     public static function index() {
         $kayttajat = Kayttaja::all();

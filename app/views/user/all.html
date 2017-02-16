@@ -1,32 +1,35 @@
 {% extends "base.html" %}
 {% block content %}
-    {% if is_admin %}
-    <div class="page-header">
-        <h1>Kaikki käyttäjät</h1>
-    </div>
+{% if is_admin %}
+<div class="page-header">
+    <h1>Kaikki käyttäjät</h1>
+</div>
 
-    <table class="table table-striped table-bordered">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Username</th>
-                <th>Opettaja</th>
-            </tr>
-        </thead>
-        {% for user in users %}
-        <tbody>
-            <tr>
-                <td><a href="">Tähän user show sivu</a></td>
-                <td>{{user.username}}</td>
-                <td>{{user.opettaja}}</td>
-                <th><a href="" class="btn btn-default">Tähän poisto</a></th>
-            </tr>
-        </tbody>
-        {% endfor %}
-    </table>
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Username</th>    
+            <th>Id</th>
+            <th>Opettaja</th>
+        </tr>
+    </thead>
+    {% for user in users %}
+    <tbody>
+        <tr>
+            <td><a href="{{base_path}}/user/show/{{user.id}}">{{user.username}}</a></td>
+            <td>{{user.id}}</td>
+            <td>{{user.teacher}}</td>
+            <th><a href="{{base_path}}/user/{{user.id}}/edit" class="btn btn-default">Muokkaa</a></th>
+            <th><form method="post" action="{{base_path}}/user/{{user.id}}/destroy" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger">Poista</button>
+                </form></th>
+        </tr>
+    </tbody>
+    {% endfor %}
+</table>
 
-    <a class="btn btn-default btn-sm" href="">Lisää uusi käyttäjä</a>
-    {% else %}
-    <h1>Tämä sivu on vain admineille.</h1>
-    {% endif %}
+<a class="btn btn-default btn-sm" href="{{base_path}}/user/new">Lisää uusi käyttäjä</a>
+{% else %}
+<h1>Tämä sivu on vain admineille.</h1>
+{% endif %}
 {% endblock %}
