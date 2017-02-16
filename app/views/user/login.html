@@ -1,5 +1,15 @@
 {% extends "base.html" %}
 {% block content %}
+{% if errors %}
+    <div class="alert alert-danger">
+      <ul>
+        {% for error in errors %}
+          <li>{{error}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+{% endif %}
+
   <h1>Kirjaudu sisään</h1>
 
   <form method="post" action="{{base_path}}/user/login">
@@ -15,7 +25,7 @@
 
     <div class="form-group">
       <label>Salasana</label>
-      <input name="password" class="form-control" value="{{attributes.salasana}}" type="text">
+      <input name="salasana" class="form-control" value="{{attributes.salasana}}" type="text">
     </div>
 
     <div class="form-group">

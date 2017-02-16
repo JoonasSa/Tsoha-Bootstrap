@@ -40,9 +40,10 @@ class KurssiController extends BaseController {
 
     public static function update($kurssi_id) {
         $params = $_POST;
+        
         $attributes = array(
             'kurssi_id' => $kurssi_id,
-            'nimi' => $params['nimi'],
+            'periodi' => $params['periodi'],
             'opintopisteet' => $params['opintopisteet'],
             'kuvaus' => $params['kuvaus']
         );

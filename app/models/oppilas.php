@@ -46,8 +46,8 @@ class Oppilas extends BaseModel {
 
     //EI TESTATTU = EI VÄLTTÄMÄTTÄ TOIMI
     public function save() {
-        $query = DB::connection()->prepare('INSERT INTO Oppilas (etunimi, sukunimi, opintopisteet, opiskelijatunnus) VALUES (:etunimi, :sukunimi, :opintopisteet, :opiskelijatunnus)');
-        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'opintopisteet' => $this->opintopisteet, 'opiskelijatunnus' => $this->opiskelijatunnus));
+        $query = DB::connection()->prepare('INSERT INTO Oppilas (etunimi, sukunimi, opintopisteet, opiskelijanumero) VALUES (:etunimi, :sukunimi, :opintopisteet, :opiskelijanumero)');
+        $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'opintopisteet' => $this->opintopisteet, 'opiskelijanumero' => $this->opiskelijanumero));
     }
 
 }

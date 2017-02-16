@@ -47,11 +47,7 @@ class Kayttaja extends BaseModel {
     //EI TOIMI OPISKELIJOILLE...
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (username, password, teacher) VALUES (:username, :password, :teacher) RETURNING id');
-        if ($this->teacher) {
-            $query->bindValue('teacher', true, \PDO::PARAM_BOOL);
-        } else {
-            $query->bindValue('teacher', false, \PDO::PARAM_BOOL);
-        }
+        $query->bindValue(":teacher", $this->teacher, PDO::PARAM_INT);
         $query->execute(array('username' => $this->username, 'password' => $this->password, 'teacher' => $this->teacher));
         $row = $query->fetch();
         $this->id = $row['id'];

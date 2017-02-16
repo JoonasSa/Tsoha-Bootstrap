@@ -48,6 +48,14 @@ $routes->get('/toteutus/show/:id', function($id) {
     ToteutusController::show($id);
 });
 
+$routes->get('/toteutus/:id/edit', function($id) {
+    ToteutusController::edit($id);
+});
+
+$routes->post('/toteutus/:id/edit', function($id) {
+    ToteutusController::update($id);
+});
+
 $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
 });

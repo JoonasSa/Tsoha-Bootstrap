@@ -6,7 +6,7 @@ class SuoritusController extends BaseController {
         $suoritukset = Suoritus::all();
         View::make('suoritus/suoritukset.html', array('srtus' => $suoritukset));
     }
-
+    
     public static function showByToteutus($id) {
         $suoritukset = Suoritus::findByToteutus($id);
         View::make('suoritus/show.html', array('srtus' => $suoritukset));

@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block content %}
+    {% if is_admin %}
     <div class="page-header">
         <h1>Kaikki käyttäjät</h1>
     </div>
@@ -12,18 +13,20 @@
                 <th>Opettaja</th>
             </tr>
         </thead>
-
+        {% for user in users %}
         <tbody>
-            {% for user in users %}
             <tr>
                 <td><a href="">Tähän user show sivu</a></td>
                 <td>{{user.username}}</td>
                 <td>{{user.opettaja}}</td>
                 <th><a href="" class="btn btn-default">Tähän poisto</a></th>
             </tr>
-            {% endfor %}
         </tbody>
+        {% endfor %}
     </table>
 
     <a class="btn btn-default btn-sm" href="">Lisää uusi käyttäjä</a>
+    {% else %}
+    <h1>Tämä sivu on vain admineille.</h1>
+    {% endif %}
 {% endblock %}

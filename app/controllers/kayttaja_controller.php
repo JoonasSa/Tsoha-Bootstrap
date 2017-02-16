@@ -11,19 +11,21 @@ class KayttajaController extends BaseController {
     }
 
     public static function index() {
-        if (BaseController::check_logged_in() && BaseController::is_admin()) {
-            $kayttajat = Kayttaja::all();
-            View::make('user/all.html', array('users' => $kayttajat));
-        }
-        Redirect::to('/', array('message' => 'Vain adminit saavat selata muita käyttäjiä.'));
+        $kayttajat = Kayttaja::all();
+        View::make('user/all.html', array('users' => $kayttajat));
     }
 
     public static function handle_login() {
         $params = $_POST;
 
-        $user = Kayttaja::authenticate($params['etunimi'], $params['sukunimi'], $params['password']);
+        $errors = self::getErrors($params);
+        if (count($errors) != 0) {
+            View::make('user/login.html', array('errors' => $errors, 'attributes' => $params));
+        }
+        $user = Kayttaja::authenticate($params['etunimi'], $params['sukunimi'], $params['salasana']);
         if (!$user) {
-            View::make('user/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'attributes' => $params));
+            //EI TOIMI
+            View::make('user/login.html', array('errors' => "Väärä käyttäjätunnus tai salasana!", 'attributes' => $params));
         } else {
             $_SESSION['user'] = $user->id;
             if ($user->teacher) {
@@ -48,7 +50,7 @@ class KayttajaController extends BaseController {
 
     public static function handle_signup() {
         $params = $_POST;
-        $user = new Kayttaja(array('username' => $params['etunimi'] . ' ' . $params['sukunimi'], 'password' => $params['salasana'], 'teacher' => isset($params['opettaja'])));
+        $user = new Kayttaja(array('username' => $params['etunimi'] . ' ' . $params['sukunimi'], 'password' => $params['salasana'], 'teacher' => $params['opettaja']));
         $errors = self::getErrors($params);
         if (count($errors) == 0) {
             $new = $user->save();

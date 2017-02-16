@@ -53,7 +53,7 @@ class Toteutus extends BaseModel {
     public static function oneLeftJoinKurssiOpe($id) {
         $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
                 . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Opettaja ON "
-                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) WHERE tote_id = :id");
+                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) WHERE tote_id = :id LIMIT 1");
         $query->execute(array("id" => $id));
         $row = $query->fetch();
         $toteutusjoin = array();
@@ -74,7 +74,7 @@ class Toteutus extends BaseModel {
         
         return $toteutusjoin;
     }
-    
+
     public static function allLeftJoinKurssiOpe() {
         $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
                 . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Opettaja ON "
@@ -101,5 +101,11 @@ class Toteutus extends BaseModel {
         
         return $toteutusjoin;
     }
+    
+    public function update() {
+        $query = DB::connection()->prepare('UPDATE Toteutus SET periodi = :periodi, alkupvm = :alkupvm, koepvm = :koepvm, '
+                . 'info = :info, vastuu_id = :vastuu_id, kurssi_id = :kurssi_id WHERE tote_id = :tote_id');
+        $query->execute(array('tote_id' => $this->tote_id, 'periodi' => $this->periodi, 'alkupvm' => $this->alkupvm, 'koepvm' => $this->koepvm, 
+                'info' => $this->info, 'vastuu_id' => $this->vastuu_id, 'kurssi_id' => $this->kurssi_id));
+    }
 }
-
