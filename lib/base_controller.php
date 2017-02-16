@@ -16,25 +16,25 @@ class BaseController {
     }
 
     //EI TOIMI
-    public static function is_teacher() {
+    public static function get_is_teacher() {
         if (isset($_SESSION['teacher'])) {
-            return $_SESSION['teacher'];
+            return Kayttaja::find($_SESSION['user']);
         }
         return null;
     }
     
     //EI TOIMI
-    public static function is_student() {
+    public static function get_is_student() {
         if (isset($_SESSION['teacher'])) {
             return null;
         }
-        return true;
+        return Kayttaja::find($_SESSION['user']);
     }
 
-
-    public static function is_admin() {
+    //EI TOIMI
+    public static function get_is_admin() {
         if (isset($_SESSION['admin'])) {
-            return $_SESSION['admin'];
+            return Kayttaja::find($_SESSION['user']);
         }
         return null;
     }

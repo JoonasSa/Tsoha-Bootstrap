@@ -1,17 +1,13 @@
 {% extends "base.html" %}
-{% import "macros/forms.html" as forms %}
 {% block content %}
+
+{% if message %}
 <div class="alert alert-success">
     {{message}}
 </div>
+{% endif %}
+
 <h1>{{kurssi.nimi}}</h1>
-
-
-<a href="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/edit" class="btn btn-default">Muokkaa</a>
-
-<form method="post" action="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/destroy" style="display: inline-block;">
-    <button type="submit" class="btn btn-danger">Poista</button>
-</form>
 
 <ul>
     <li><strong>Tunniste:</strong> {{kurssi.kurssi_id}}</li>
@@ -19,4 +15,12 @@
 </ul>
 
 <p>{{kurssi.kuvaus}}</p>
+
+{% if is_teacher %}
+<a href="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/edit" class="btn btn-default">Muokkaa</a>
+<form method="post" action="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/destroy" style="display: inline-block;">
+    <button type="submit" class="btn btn-danger">Poista</button>
+</form>
+{% endif %}
+
 {% endblock %}

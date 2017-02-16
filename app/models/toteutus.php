@@ -49,5 +49,57 @@ class Toteutus extends BaseModel {
         
         return null;
     }
+    
+    public static function oneLeftJoinKurssiOpe($id) {
+        $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Opettaja ON "
+                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) WHERE tote_id = :id");
+        $query->execute(array("id" => $id));
+        $row = $query->fetch();
+        $toteutusjoin = array();
+        
+        if ($row) {
+            $toteutusjoin[] = array(
+                "tote_id" => $row["tote_id"],
+                "periodi" => $row["periodi"],
+                "alkupvm" => $row["alkupvm"],
+                "koepvm" => $row["koepvm"],
+                "info" => $row["info"],
+                "vastuu_id" => $row["vastuu_id"],
+                "kurssi_id" => $row["kurssi_id"],
+                "nimi" => $row["nimi"],
+                "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
+                "opintopisteet" => $row["opintopisteet"]);
+        }    
+        
+        return $toteutusjoin;
+    }
+    
+    public static function allLeftJoinKurssiOpe() {
+        $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Opettaja ON "
+                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) ORDER BY Toteutus.periodi ASC, "
+                . "Kurssi.nimi ASC");
+        $query->execute();
+        $rows = $query->fetchAll();
+        $toteutusjoin = array();
+        
+        foreach ($rows as $row) {
+            $toteutusjoin[] = array(
+                "tote_id" => $row["tote_id"],
+                "periodi" => $row["periodi"],
+                "alkupvm" => $row["alkupvm"],
+                "koepvm" => $row["koepvm"],
+                "info" => $row["info"],
+                "vastuu_id" => $row["vastuu_id"],
+                "kurssi_id" => $row["kurssi_id"],
+                "nimi" => $row["nimi"],
+                "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
+                "opintopisteet" => $row["opintopisteet"]
+            );
+        }
+        
+        return $toteutusjoin;
+    }
 }
 

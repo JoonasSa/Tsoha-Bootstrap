@@ -17,7 +17,15 @@
         if(method_exists('BaseController', 'get_user_logged_in')){
           $content['user_logged_in'] = BaseController::get_user_logged_in();
         }
-
+        if(method_exists('BaseController', 'get_is_admin')){
+          $content['is_admin'] = BaseController::get_is_admin();
+        }
+        if(method_exists('BaseController', 'get_is_student')){
+          $content['is_student'] = BaseController::get_is_student();
+        }
+        if(method_exists('BaseController', 'get_is_teacher')){
+          $content['is_teacher'] = BaseController::get_is_teacher();
+        }
         // Tulostetaan Twig:n renderöimä näkymä
         echo $twig->render($view, $content);
       } catch (Exception $e){

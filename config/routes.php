@@ -44,6 +44,10 @@ $routes->get('/toteutus/toteutukset', function() {
     ToteutusController::index();
 });
 
+$routes->get('/toteutus/show/:id', function($id) {
+    ToteutusController::show($id);
+});
+
 $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
 });

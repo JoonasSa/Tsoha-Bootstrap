@@ -9,10 +9,13 @@ class KayttajaController extends BaseController {
     public static function signup() {
         View::make('user/signup.html');
     }
-    
+
     public static function index() {
-        $kayttajat = Kayttaja::all();
-        View::make('user/all.html', array('users' => $kayttajat));
+        if (BaseController::check_logged_in() && BaseController::is_admin()) {
+            $kayttajat = Kayttaja::all();
+            View::make('user/all.html', array('users' => $kayttajat));
+        }
+        Redirect::to('/', array('message' => 'Vain adminit saavat selata muita käyttäjiä.'));
     }
 
     public static function handle_login() {
@@ -23,9 +26,14 @@ class KayttajaController extends BaseController {
             View::make('user/login.html', array('error' => 'Väärä käyttäjätunnus tai salasana!', 'attributes' => $params));
         } else {
             $_SESSION['user'] = $user->id;
-            $_SESSION['teacher'] = $user->teacher;
             if ($user->teacher) {
-                $_SESSION['admin'] = $user->admin;
+                $_SESSION['teacher'] = $user->teacher;
+                if ($user->admin) {
+                    $_SESSION['admin'] = $user->admin;
+                }
+            } else {
+                $_SESSION['teacher'] = null;
+                $_SESSION['admin'] = null;
             }
             Redirect::to('/', array('message' => 'Tervetuloa takaisin ' . $user->username . '!'));
         }
@@ -33,6 +41,8 @@ class KayttajaController extends BaseController {
 
     public static function handle_logout() {
         $_SESSION['user'] = null;
+        $_SESSION['teacher'] = null;
+        $_SESSION['admin'] = null;
         Redirect::to('/user/login', array('message' => 'Olet kirjautunut ulos!'));
     }
 

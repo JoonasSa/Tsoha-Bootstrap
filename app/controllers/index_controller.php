@@ -12,14 +12,12 @@ class IndexController extends BaseController {
 
     public static function sandbox() {
         $a = $_SESSION['user'];
-        
         Kint::dump($a);
-        Kint::dump(BaseController::is_student());
-        Kint::dump(BaseController::is_teacher());
-        Kint::dump(BaseController::is_admin());
+        Kint::dump(BaseController::get_user_logged_in());
+        Kint::dump(BaseController::get_is_student());
+        Kint::dump(BaseController::get_is_teacher());
+        Kint::dump(BaseController::get_is_admin());
         
-        
-        //Kint::dump($c);
         View::make('hiekkalaatikko.html');
     }
 
