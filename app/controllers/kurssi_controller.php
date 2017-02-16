@@ -43,7 +43,7 @@ class KurssiController extends BaseController {
         
         $attributes = array(
             'kurssi_id' => $kurssi_id,
-            'periodi' => $params['periodi'],
+            'nimi' => $params['nimi'],
             'opintopisteet' => $params['opintopisteet'],
             'kuvaus' => $params['kuvaus']
         );

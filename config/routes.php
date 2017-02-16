@@ -56,6 +56,10 @@ $routes->post('/toteutus/:id/edit', function($id) {
     ToteutusController::update($id);
 });
 
+$routes->post('/toteutus/:id/destroy', function($id) {
+    ToteutusController::destroy($id);
+});
+
 $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
 });

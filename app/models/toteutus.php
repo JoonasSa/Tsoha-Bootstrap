@@ -108,4 +108,9 @@ class Toteutus extends BaseModel {
         $query->execute(array('tote_id' => $this->tote_id, 'periodi' => $this->periodi, 'alkupvm' => $this->alkupvm, 'koepvm' => $this->koepvm, 
                 'info' => $this->info, 'vastuu_id' => $this->vastuu_id, 'kurssi_id' => $this->kurssi_id));
     }
+    
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Toteutus WHERE tote_id = :tote_id');
+        $query->execute(array('tote_id' => $this->tote_id));
+    }
 }

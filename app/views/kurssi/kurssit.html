@@ -30,7 +30,7 @@
         {% endfor %}
     </tbody>
 </table>
-
+{% if is_teacher %}
 <a class="btn btn-default btn-sm" href="{{base_path}}/kurssi/new">Lisää uusi kurssi</a>
-
+{% endif %}
 {% endblock %}

@@ -2,7 +2,6 @@
 {% block content %}
 <h1>Muokkaa toteutusta {{tote.nimi}}</h1>
 
-{% for tote in toteutusjoin %}
 {% if errors %}
 <div class="alert alert-danger">
     <ul>
@@ -12,7 +11,7 @@
     </ul>
 </div>
 {% endif %}
-
+{% for tote in toteutusjoin %}
 <form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/edit">
     <div class="form-group">
         <label>Kurssi</label>

@@ -10,7 +10,6 @@
         <tr>
             <th>Periodi</th>
             <th>Nimi</th>
-            <th>Tunniste</th>
             <th>Opintopisteet</th>
             <th>Alkupvm</th>
             <th>Koepvm</th>
@@ -23,8 +22,7 @@
         {% for tote in toteutusjoin %}
         <tr>
             <td>{{tote.periodi}}</td>
-            <td><a href="{{base_path}}/toteutus/show/{{tote.kurssi_id}}">{{tote.nimi}}</a></td>
-            <td>{{tote.tote_id}}</td>
+            <td><a href="{{base_path}}/toteutus/show/{{tote.tote_id}}">{{tote.nimi}}</a></td>
             <td>{{tote.opintopisteet}}</td>
             <td>{{tote.alkupvm}}</td>
             <td>{{tote.koepvm}}</td>
@@ -32,15 +30,18 @@
             <td><a href="{{base_path}}/kurssi/show/{{tote.kurssi_id}}">Linkki</a></td>
             {% if user_logged_in %}
             {% if is_teacher %}
-            <th><a class="btn btn-default btn-sm" href="{{base_path}}/edit">Muokkaa</a></th>
-            {% endif %}
-            {% if is_student %}
-            <th><a href="" class="btn btn-default">Ilmoittaudu kurssille</a></th>
-            {% endif %}
-            {% endif %}
-        </tr>
-        {% endfor %}
-    </tbody>
+            <td><a href="{{base_path}}/toteutus/{{tote.tote_id}}/edit" class="btn btn-default">Muokkaa</a></td>
+    <td><form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/destroy" style="display: inline-block;">
+        <button type="submit" class="btn btn-danger">Poista</button>
+        </form></td>
+    {% endif %}
+    {% if is_student %}
+    <th><a href="" class="btn btn-default">Ilmoittaudu kurssille</a></th>
+    {% endif %}
+    {% endif %}
+</tr>
+{% endfor %}
+</tbody>
 
 </table>
 
