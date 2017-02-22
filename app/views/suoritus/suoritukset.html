@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Kaikki suoritukset</h1>
+</div>
+{% if is_teacher %}
+<p><a class="btn btn-default btn-sm" href="{{base_path}}/suoritus/new">Lisää uusi suoritus</a></p>
+{% endif %}
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Suorittaja</th>
+            <th>Arvosana</th>
+            <th>Opintopisteet</th>
+            <th>Suorituspäivä</th>
+            <th>Kurssi</th>
+            <th>Kurssisivu</th>
+            <th>Toteutuksensivu</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for s in suoritukset %}
+        <tr>
+            <td><a href="{{base_path}}/user/show/{{s.id}}">{{s.username}}</td>
+            <td>{{s.arvosana}}</td>
+            <td>{{s.opintopisteet}}</td>
+            <td>{{s.pvm}}</td>
+            <td>{{s.kurssi}}</td>
+            <td><a href="{{base_path}}/kurssi/show/{{s.kurssi_id}}">Linkki</a></td>
+            <td><a href="{{base_path}}/toteutus/show/{{s.tote_id}}">Linkki</a></td>
+            <td><form method="post" action="{{base_path}}/suoritus/{{s.tote_id}}{{s.id}}/destroy" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger">Poista</button>
+                </form></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

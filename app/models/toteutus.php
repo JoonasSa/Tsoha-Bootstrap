@@ -59,7 +59,7 @@ class Toteutus extends BaseModel {
         $toteutusjoin = array();
         
         if ($row) {
-            $toteutusjoin[] = array(
+            $toteutusjoin = array(
                 "tote_id" => $row["tote_id"],
                 "periodi" => $row["periodi"],
                 "alkupvm" => $row["alkupvm"],
@@ -69,9 +69,9 @@ class Toteutus extends BaseModel {
                 "kurssi_id" => $row["kurssi_id"],
                 "nimi" => $row["nimi"],
                 "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
-                "opintopisteet" => $row["opintopisteet"]);
+                "opintopisteet" => $row["opintopisteet"]
+            );
         }    
-        
         return $toteutusjoin;
     }
 
@@ -100,6 +100,15 @@ class Toteutus extends BaseModel {
         }
         
         return $toteutusjoin;
+    }
+    
+    public function save() {
+        $query = DB::connection()->prepare('INSERT INTO Toteutus (periodi, alkupvm, koepvm, info , vastuu_id, kurssi_id) '
+                . 'VALUES (:periodi, :alkupvm, :koepvm, :info , :vastuu_id, :kurssi_id) RETURNING tote_id');
+        $query->execute(array('periodi' => $this->periodi, 'alkupvm' => $this->alkupvm, 'koepvm' => $this->koepvm, 
+                'info' => $this->info, 'vastuu_id' => $this->vastuu_id, 'kurssi_id' => $this->kurssi_id));
+        $row = $query->fetch();
+        $this->tote_id = $row['tote_id'];
     }
     
     public function update() {

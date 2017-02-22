@@ -3,7 +3,9 @@
 <div class="page-header">
     <h1>Kaikki kurssit</h1>
 </div>
-
+{% if is_teacher %}
+<p><a class="btn btn-default btn-sm" href="{{base_path}}/kurssi/new">Lisää uusi kurssi</a></p>
+{% endif %}
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -30,7 +32,5 @@
         {% endfor %}
     </tbody>
 </table>
-{% if is_teacher %}
-<a class="btn btn-default btn-sm" href="{{base_path}}/kurssi/new">Lisää uusi kurssi</a>
-{% endif %}
+
 {% endblock %}

@@ -11,19 +11,57 @@ class ToteutusController extends BaseController {
         $toteutusjoin = Toteutus::oneLeftJoinKurssiOpe($id);
         View::make('toteutus/show.html', array('tote' => $toteutusjoin));
     }
+    
+    public static function create() {
+        $opettajat = Opettaja::all();    
+        $kurssit = Kurssi::all();
+        $periodit = array(1, 2, 3, 4, 5);
+        View::make("toteutus/new.html", array('kurssit' => $kurssit, 'opettajat' => $opettajat, 'periodit' => $periodit));
+    }
+    
+    public static function store() {
+        if(isset($_POST) && count($_POST)) { $_SESSION['post'] = $_POST; }
+        if(isset($_SESSION['post']) && count($_SESSION['post'])) { $_POST = $_SESSION['post']; }
+        $params = $_POST;
+
+        $attributes = array(
+            'periodi' => $params['periodi'],
+            'alkupvm' => $params['alkupvm'],
+            'koepvm' => $params['koepvm'],
+            'info' => $params['info'],
+            'vastuu_id' => $params['opettaja'],
+            'kurssi_id' => $params['kurssi']
+        );
+
+        $errors = array();
+        $errors = BaseModel::validateDate($params['alkupvm'], "Alkupäivä", $errors);
+        $errors = BaseModel::validateDate($params['koepvm'], "Koepäivä", $errors);
+        if (count($errors) == 0) {
+            $toteutus = new Toteutus($attributes);
+            $toteutus->save();
+            Redirect::to('/toteutus/show/' . $toteutus->tote_id, array('message' => 'Kurssi on lisätty tietokantaan.'));
+        } else {
+            View::make('toteutus/new.html', array('errors' => $errors, 'tote' => $attributes, 'kurssit' => Kurssi::all(),
+                'opettajat' => Opettaja::all(), 'periodit' => array(1,2,3,4,5), 'selected_kurssi' => $params['kurssi'],
+                'selected_opettaja' => $params['opettaja'], 'selected_periodi' => $params['periodi']));
+        }
+    }
 
     public static function edit($id) {
-        $toteutusjoin = Toteutus::oneLeftJoinKurssiOpe($id);
+        $tote = Toteutus::oneLeftJoinKurssiOpe($id);
         $opettajat = Opettaja::all();
         $kurssit = Kurssi::all();
         $periodit = array(1, 2, 3, 4, 5);
-        View::make('toteutus/edit.html', array('toteutusjoin' => $toteutusjoin, 'kurssit' => $kurssit, 'opettajat' => $opettajat, 'periodit' => $periodit));
+        View::make('toteutus/edit.html', array('tote' => $tote, 'kurssit' => $kurssit, 'opettajat' => $opettajat, 'periodit' => $periodit));
     }
 
     public static function update($id) {
+        Kint::dump($_POST);
+        if(isset($_POST) && count($_POST)) { $_SESSION['post'] = $_POST; }
+        if(isset($_SESSION['post']) && count($_SESSION['post'])) { $_POST = $_SESSION['post']; }
         $params = $_POST;
 
-        $toteutus = new Toteutus(array(
+        $attributes = array(
             'tote_id' => $id,
             'periodi' => $params['periodi'],
             'alkupvm' => $params['alkupvm'],
@@ -31,16 +69,20 @@ class ToteutusController extends BaseController {
             'info' => $params['info'],
             'vastuu_id' => $params['opettaja'],
             'kurssi_id' => $params['kurssi']
-        ));
+        );
 
-        $errors = self::validateDates($params['alkupvm'], $params['koepvm']);
+        $errors = array();
+        $errors = BaseModel::validateDate($params['alkupvm'], "Alkupäivä", $errors);
+        $errors = BaseModel::validateDate($params['koepvm'], "Koepäivä", $errors);
         if (count($errors) == 0) {
+            $toteutus = new Toteutus($attributes);
             $toteutus->update();
+            $_SESSION['post'] = null;
             Redirect::to('/toteutus/show/' . $toteutus->tote_id, array('message' => 'Toteutusta on muokattu onnistuneesti!'));
         } else {
-            //EI VALMIS
-            self::edit($id);
-            //View::make('toteutus/edit.html', array('errors' => $errors));
+            View::make('toteutus/edit.html', array('errors' => $errors, 'tote' => $attributes, 'kurssit' => Kurssi::all(),
+                'opettajat' => Opettaja::all(), 'periodit' => array(1,2,3,4,5), 'selected_kurssi' => $params['kurssi'],
+                'selected_opettaja' => $params['opettaja'], 'selected_periodi' => $params['periodi']));
         }
     }
     
@@ -48,19 +90,6 @@ class ToteutusController extends BaseController {
         $toteutus = new Toteutus(array('tote_id' => $id));
         $toteutus->destroy();
         Redirect::to('/toteutus/toteutukset', array('message' => 'Toteutus on poistettu onnistuneesti!'));
-    }
-    
-    private static function validateDates($alkupvm, $koepvm) {
-        $errors = array();
-        $d = DateTime::createFromFormat('Y-m-d', $alkupvm);
-        if (!($d && $d->format('Y-m-d') === $alkupvm)) {
-            $errors[] = $alkupvm . " ei ole muotoa YYYY-MM-DD.";
-        }
-        $e = DateTime::createFromFormat('Y-m-d', $koepvm);
-        if (!($e && $e->format('Y-m-d') === $koepvm)) {
-            $errors[] = $koepvm . " ei ole muotoa YYYY-MM-DD.";
-        }
-        return $errors;
     }
 
 }

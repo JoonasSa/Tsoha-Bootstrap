@@ -8,10 +8,6 @@ $routes->get('/hiekkalaatikko', function() {
     IndexController::sandbox();
 });
 
-$routes->get('/edit', function() {
-    IndexController::edit();
-});
-
 $routes->get('/kurssi/kurssit', function() {
     KurssiController::index();
 });
@@ -52,6 +48,14 @@ $routes->get('/toteutus/:id/edit', function($id) {
     ToteutusController::edit($id);
 });
 
+$routes->get('/toteutus/new', function() {
+    ToteutusController::create();
+});
+
+$routes->post('/toteutus', function() {
+    ToteutusController::store();
+});
+
 $routes->post('/toteutus/:id/edit', function($id) {
     ToteutusController::update($id);
 });
@@ -62,6 +66,22 @@ $routes->post('/toteutus/:id/destroy', function($id) {
 
 $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
+});
+
+$routes->get('/suoritus/show/:id', function($id) {
+    SuoritusController::show($id);
+});
+
+$routes->get('/suoritus/new', function() {
+    SuoritusController::create();
+});
+
+$routes->post('/suoritus', function() {
+    SuoritusController::store();
+});
+
+$routes->post('/suoritus/:id/destroy', function($id) {
+    SuoritusController::destroy($id);
 });
 
 $routes->get('/user/login', function() {

@@ -29,8 +29,8 @@ class KayttajaController extends BaseController {
         }
         $user = Kayttaja::authenticate($params['etunimi'], $params['sukunimi'], $params['salasana']);
         if (!$user) {
-            //EI TOIMI
-            View::make('user/login.html', array('errors' => "Väärä käyttäjätunnus tai salasana!", 'attributes' => $params));
+            $errors[] = "Väärä käyttäjätunnus tai salasana!";
+            View::make('user/login.html', array('errors' => $errors, 'attributes' => $params));
         } else {
             $_SESSION['user'] = $user->id;
             if ($user->teacher) {

@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
+<h1>Opintopisteet: {{data.op.opintopisteet}}</h1>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Arvosana</th>
+            <th>Opintopisteet</th>
+            <th>Suorituspäivä</th>
+            <th>Kurssi</th>
+            <th>Kurssisivu</th>
+            <th>Toteutuksensivu</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for s in data.suoritukset %}
+        <tr>
+            <td>{{s.arvosana}}</td>
+            <td>{{s.opintopisteet}}</td>
+            <td>{{s.pvm}}</td>
+            <td>{{s.kurssi}}</td>
+            <td><a href="{{base_path}}/kurssi/show/{{s.kurssi_id}}">Linkki</a></td>
+            <td><a href="{{base_path}}/toteutus/show/{{s.tote_id}}">Linkki</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p>{{tote.info}}</p>
+</br>
+{% if is_teacher %}
+<a href="{{base_path}}/toteutus/{{tote.tote_id}}/edit" class="btn btn-default">Muokkaa</a>
+<form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/destroy" style="display: inline-block;">
+    <button type="submit" class="btn btn-danger">Poista</button>
+</form>
+{% endif %}
+{% if is_student %}
+<form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/join" style="display: inline-block;">
+    <button type="submit" class="btn btn-default">Ilmoittaudu kurssille</button>
+</form>
+{% endif %}
+
+{% endblock %}

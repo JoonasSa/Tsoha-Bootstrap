@@ -48,45 +48,69 @@ class Suoritus extends BaseModel {
     }
 
     public static function findByOppilas($id) {
-        $query = DB::connection()->prepare("SELECT * FROM Suoritus WHERE suorittaja = :id");
+        $query = DB::connection()->prepare("SELECT Suoritus.tote_id, Suoritus.arvosana, "
+                . "Suoritus.pvm, Kayttaja.id, Kayttaja.username, Kurssi.nimi, Kurssi.kurssi_id, "
+                . "Kurssi.opintopisteet FROM Suoritus LEFT JOIN Toteutus ON "
+                . "(Suoritus.tote_id = Toteutus.tote_id) LEFT JOIN Kurssi ON "
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Oppilas ON "
+                . "(Suoritus.suorittaja = Oppilas.opiskelijanumero) LEFT JOIN Kayttaja "
+                . "ON (Oppilas.opiskelijanumero = Kayttaja.id) WHERE Kayttaja.id = :id ORDER BY "
+                . "Kurssi.nimi ASC, Suoritus.pvm ASC");
         $query->execute(array("id" => $id));
         $rows = $query->fetchAll();
 
         if ($rows) {
+            $opintopisteet = 0;
             $suoritukset = array();
             foreach ($rows as $row) {
-                $suoritukset[] = new Suoritus(array(
+                $suoritukset[] = array(
                     "tote_id" => $row["tote_id"],
-                    "pvm" => $row["pvm"],
                     "arvosana" => $row["arvosana"],
-                    "suorittaja" => $row["suorittaja"]
-                ));
+                    "pvm" => $row["pvm"],
+                    "kurssi" => $row["nimi"],
+                    "kurssi_id" => $row["kurssi_id"],
+                    "username" => $row["username"],
+                    "id" => $row["id"],
+                    "opintopisteet" => $row["opintopisteet"]
+                );
+                $opintopisteet += $row['opintopisteet'];
             }
-            return $suoritukset;
+            $data = array();
+            $data['suoritukset'] = $suoritukset;
+            $data['op'] = $opintopisteet;
+            return $data;
         }
 
         return null;
     }
-    
-    public static function findByOppilasAndToteutus($oppilas, $toteutus) {
-        $query = DB::connection()->prepare("SELECT * FROM Suoritus WHERE suorittaja = :oppilas AND tote_id = :toteutus");
-        $query->execute(array("oppilas" => $oppilas, "toteutus" => $toteutus));
+
+    public static function leftJoinToteutusKurssiOppilas() {
+        $query = DB::connection()->prepare("SELECT Suoritus.tote_id, Suoritus.arvosana, "
+                . "Suoritus.pvm, Kayttaja.id, Kayttaja.username, Kurssi.nimi, Kurssi.kurssi_id, "
+                . "Kurssi.opintopisteet FROM Suoritus LEFT JOIN Toteutus ON "
+                . "(Suoritus.tote_id = Toteutus.tote_id) LEFT JOIN Kurssi ON "
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Oppilas ON "
+                . "(Suoritus.suorittaja = Oppilas.opiskelijanumero) LEFT JOIN Kayttaja "
+                . "ON (Oppilas.opiskelijanumero = Kayttaja.id) ORDER BY "
+                . "Kurssi.nimi ASC, Suoritus.pvm ASC");
+        $query->execute();
         $rows = $query->fetchAll();
+        $toteutusjoin = array();
 
-        if ($rows) {
-            $suoritukset = array();
-            foreach ($rows as $row) {
-                $suoritukset[] = new Suoritus(array(
-                    "tote_id" => $row["tote_id"],
-                    "pvm" => $row["pvm"],
-                    "arvosana" => $row["arvosana"],
-                    "suorittaja" => $row["suorittaja"]
-                ));
-            }
-            return $suoritukset;
+        foreach ($rows as $row) {
+            $toteutusjoin[] = array(
+                "tote_id" => $row["tote_id"],
+                "arvosana" => $row["arvosana"],
+                "pvm" => $row["pvm"],
+                "kurssi" => $row["nimi"],
+                "kurssi_id" => $row["kurssi_id"],
+                "username" => $row["username"],
+                "id" => $row["id"],
+                "opintopisteet" => $row["opintopisteet"]
+            );
         }
 
-        return null;
+        return $toteutusjoin;
     }
-    
+
 }

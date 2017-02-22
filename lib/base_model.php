@@ -39,6 +39,14 @@ class BaseModel {
         return $array;
     }
     
+    public function validateDate($alkupvm, $nimi, $array) {
+        $d = DateTime::createFromFormat('Y-m-d', $alkupvm);
+        if (!($d && $d->format('Y-m-d') === $alkupvm)) {
+            $array[] = $nimi . " ei ole muotoa YYYY-MM-DD.";
+        } 
+        return $array;
+    }
+    
     /*  
     public function errors() {
         // Lisätään $errors muuttujaan kaikki virheilmoitukset taulukkona

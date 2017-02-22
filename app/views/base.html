@@ -37,9 +37,14 @@
                 <div class="collapse navbar-collapse" id="navigation">
                     <ul class="nav navbar-nav">
                         <!-- Navigaation linkit -->
-                        <li><a href="{{base_path}}">Etusivu</a></li>
                         <li><a href="{{base_path}}/toteutus/toteutukset">Ilmoittaudu kurssille</a></li>
                         <li><a href="{{base_path}}/kurssi/kurssit">Selaa kursseja</a></li>
+                        {% if is_teacher %}
+                        <li><a href="{{base_path}}/suoritus/suoritukset">Selaa suorituksia</a></li>
+                        {% endif %}
+                        {% if is_student %}
+                        <li><a href="{{base_path}}/suoritus/show/{{get_id}}">Selaa suorituksiasi</a></li>
+                        {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                     {% if user_logged_in %}

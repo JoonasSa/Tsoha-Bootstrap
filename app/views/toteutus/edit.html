@@ -11,11 +11,10 @@
     </ul>
 </div>
 {% endif %}
-{% for tote in toteutusjoin %}
 <form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/edit">
     <div class="form-group">
         <label>Kurssi</label>
-        <select class="form-control" name="kurssi">
+        <select id="kurssi" class="form-control" name="kurssi">
             {% for kurssi in kurssit %}
             <option value="{{kurssi.kurssi_id}}">{{kurssi.nimi}}</option>
             {% endfor %}
@@ -23,7 +22,7 @@
     </div>
     <div class="form-group">
         <label>Periodi</label>
-        <select class="form-control" name="periodi">
+        <select id="periodi" class="form-control" name="periodi">
             {% for periodi in periodit %}
             <option value="{{periodi}}">{{periodi}}</option>
             {% endfor %}
@@ -43,7 +42,7 @@
     </div>
     <div class="form-group">
         <label>Opettaja</label>
-        <select class="form-control" name="opettaja">
+        <select id="opettaja" class="form-control" name="opettaja">
             {% for opettaja in opettajat %}
             <option value="{{opettaja.opettajatunnus}}">{{opettaja.etunimi}} {{opettaja.sukunimi}}</option>
             {% endfor %}
@@ -53,5 +52,16 @@
         <button type="submit" class="btn btn-primary">Tallenna</button>
     </div>
 </form>
-{% endfor %}
+
+<p hidden id="skurssi">{{selected_kurssi}}</p>
+<p hidden id="speriodi">{{selected_periodi}}</p>
+<p hidden id="sopettaja">{{selected_opettaja}}</p>
+
+<script>
+
+    document.getElementById('kurssi').value = document.getElementById('skurssi').innerHTML;
+    document.getElementById('periodi').value = document.getElementById('speriodi').innerHTML;
+    document.getElementById('opettaja').value = document.getElementById('sopettaja').innerHTML;
+
+</script>
 {% endblock %}

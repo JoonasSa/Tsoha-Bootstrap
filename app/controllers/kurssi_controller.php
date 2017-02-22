@@ -39,6 +39,8 @@ class KurssiController extends BaseController {
     }
 
     public static function update($kurssi_id) {
+        if(isset($_POST) && count($_POST)) { $_SESSION['post'] = $_POST; }
+        if(isset($_SESSION['post']) && count($_SESSION['post'])) { $_POST = $_SESSION['post']; }
         $params = $_POST;
         
         $attributes = array(
@@ -52,10 +54,10 @@ class KurssiController extends BaseController {
         $errors = KurssiController::getErrors($params, $kurssi);
         if (count($errors) == 0) {
             $kurssi->update();
-            Redirect::to('/kurssi/show/' . $kurssi->kurssi_id, array('message' => 'Kurssia on muokattu onnistuneesti!'));
+            $_SESSION['post'] = null;
+            Redirect::to('/kurssi/show/' . $kurssi_id, array('message' => 'Kurssia on muokattu onnistuneesti!'));
         } else {
-            //Bugi: kadottaa kurssi_id:n tokan update virheen jälkeen
-            View::make('kurssi/edit.html', array('errors' => $errors, 'kurssi' => $params, 'id' => $kurssi_id));
+            View::make('/kurssi/edit.html', array('errors' => $errors, 'kurssi' => $attributes));
         }         
     }
 
