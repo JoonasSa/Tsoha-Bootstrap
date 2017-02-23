@@ -14,7 +14,7 @@ class SuoritusController extends BaseController {
     public static function my() {
         if (BaseController::get_is_student()) {
             $id = BaseController::get_id();
-            $suoritusjoin = Suoritus::leftJoinToteutusKurssiOppilas($id);
+            $suoritusjoin = Suoritus::findByOppilas($id);
             $opintopisteet = Oppilas::get_op($id);
             View::make('suoritus/my.html', array('suoritukset' => $suoritusjoin, 'opintopisteet' => $opintopisteet));
         } else {

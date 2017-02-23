@@ -47,20 +47,20 @@ class Suoritus extends BaseModel {
         return null;
     }
 
+    //EI TOIMI
     public static function findByOppilas($id) {
         $query = DB::connection()->prepare("SELECT Suoritus.tote_id, Suoritus.arvosana, "
-                . "Suoritus.pvm, Kayttaja.id, Kayttaja.username, Kurssi.nimi, Kurssi.kurssi_id, "
-                . "Kurssi.opintopisteet FROM Suoritus LEFT JOIN Toteutus ON "
-                . "(Suoritus.tote_id = Toteutus.tote_id) LEFT JOIN Kurssi ON "
-                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Oppilas ON "
-                . "(Suoritus.suorittaja = Oppilas.opiskelijanumero) LEFT JOIN Kayttaja "
-                . "ON (Oppilas.opiskelijanumero = Kayttaja.id) WHERE Kayttaja.id = :id ORDER BY "
-                . "Kurssi.nimi ASC, Suoritus.pvm ASC");
+                . "Suoritus.pvm, Oppilas.opiskelijanumero, Oppilas.etunimi, Oppilas.sukunimi, "
+                . "Kurssi.nimi, Kurssi.kurssi_id, Kurssi.opintopisteet FROM Oppilas "
+                . "LEFT JOIN Suoritus ON (Oppilas.opiskelijanumero = Suoritus.suorittaja) "
+                . "LEFT JOIN Toteutus ON (Suoritus.tote_id = Toteutus.tote_id) "
+                . "LEFT JOIN Kurssi ON (Toteutus.kurssi_id = Kurssi.kurssi_id) "
+                . "WHERE Oppilas.opiskelijanumero = :id "
+                . "ORDER BY Kurssi.nimi ASC, Suoritus.pvm ASC");
         $query->execute(array("id" => $id));
         $rows = $query->fetchAll();
 
         if ($rows) {
-            $opintopisteet = 0;
             $suoritukset = array();
             foreach ($rows as $row) {
                 $suoritukset[] = array(
@@ -69,13 +69,11 @@ class Suoritus extends BaseModel {
                     "pvm" => $row["pvm"],
                     "kurssi" => $row["nimi"],
                     "kurssi_id" => $row["kurssi_id"],
-                    "username" => $row["username"],
-                    "id" => $row["id"],
+                    "username" => $row["etunimi"] . $row["sukunimi"],
+                    "id" => $row["opiskelijanumero"],
                     "opintopisteet" => $row["opintopisteet"]
                 );
-                $opintopisteet += $row['opintopisteet'];
             }
-            $suoritukset['op'] = $opintopisteet;
             return $suoritukset;
         }
 

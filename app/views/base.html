@@ -43,14 +43,14 @@
                         {% if is_teacher %}
                         <li><a href="{{base_path}}/toteutus/toteutukset">Tulevat kurssit</a></li>
                         {% endif %}
-                        <li><a href="{{base_path}}/kurssi/kurssit">Selaa kursseja</a></li>
+                        <li><a href="{{base_path}}/kurssi/kurssit">Kaikki kurssit</a></li>
                         {% if is_teacher %}
-                        <li><a href="{{base_path}}/suoritus/suoritukset">Selaa suorituksia</a></li>
-                        <li><a href="{{base_path}}/toteutus/my">Selaa toteutuksiasi</a></li>
+                        <li><a href="{{base_path}}/suoritus/suoritukset">Kaikki suoritukset</a></li>
+                        <li><a href="{{base_path}}/toteutus/my">Kurssisi</a></li>
                         {% endif %}
                         {% if is_student %}
-                        <li><a href="{{base_path}}/ilmoittautumiset/show/">Selaa ilmoittautumisiasi</a></li>
-                        <li><a href="{{base_path}}/suoritus/my">Selaa suorituksiasi</a></li>
+                        <li><a href="{{base_path}}/ilmoittautumiset/show/">Ilmoittautumisesi</a></li>
+                        <li><a href="{{base_path}}/suoritus/my">Suoritetut kurssit</a></li>
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">

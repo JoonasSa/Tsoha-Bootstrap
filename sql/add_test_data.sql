@@ -15,8 +15,8 @@ VALUES ('Testi', 'Jäbä', true, 1),
 ('Hermanni', 'Pallovasara', true, 3);
 
 INSERT INTO Oppilas(etunimi, sukunimi, opintopisteet, opiskelijanumero)
-VALUES ('Matti', 'Niemi', 145, 4),
-('Pekka', 'Mutka', 17, 5);
+VALUES ('Matti', 'Niemi', 2, 4),
+('Pekka', 'Mutka', 6, 5);
 
 INSERT INTO Toteutus(periodi, alkupvm, koepvm, info, vastuu_id, kurssi_id) 
 VALUES (2, NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 'Helppo kurssi', 1, 1),
@@ -29,7 +29,13 @@ INSERT INTO Ilmoittautuminen(tote_id, ilmoittautuja)
 VALUES (1, 4), (2, 4), (2, 5), (4, 5), (3, 4), (5, 5), (5, 4);
 
 INSERT INTO Suoritus(pvm, arvosana, tote_id, suorittaja) 
-VALUES (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 1, 5),
-(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 1, 1, 4),
-(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 5, 3, 5);
+VALUES (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 1, 4),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 1, 2, 4),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 3, 3, 4),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 5, 4),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 2, 1, 5),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 3, 2, 5),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 3, 5),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 4, 5),
+(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 5, 5, 5);
 
