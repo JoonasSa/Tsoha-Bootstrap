@@ -10,12 +10,13 @@ class SuoritusController extends BaseController {
             Redirect::to('/', array('message' => 'Sinulla ei ole oikeutta päästä tälle sivulle.'));
         }
     }
-    
-    public static function show($id) {
-        $user = BaseController::get_user_logged_in();
-        if ($user && $user->id == $id) {
-                $suoritusjoin = Suoritus::leftJoinToteutusKurssiOppilas();
-                View::make('suoritus/suoritukset.html', array('suoritukset' => $suoritusjoin));
+
+    public static function my() {
+        if (BaseController::get_is_student()) {
+            $id = BaseController::get_id();
+            $suoritusjoin = Suoritus::leftJoinToteutusKurssiOppilas($id);
+            $opintopisteet = Oppilas::get_op($id);
+            View::make('suoritus/my.html', array('suoritukset' => $suoritusjoin, 'opintopisteet' => $opintopisteet));
         } else {
             Redirect::to('/', array('message' => 'Sinulla ei ole oikeutta päästä tälle sivulle.'));
         }

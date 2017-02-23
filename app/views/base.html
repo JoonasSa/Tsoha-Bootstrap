@@ -37,27 +37,35 @@
                 <div class="collapse navbar-collapse" id="navigation">
                     <ul class="nav navbar-nav">
                         <!-- Navigaation linkit -->
+                        {% if is_student %}
                         <li><a href="{{base_path}}/toteutus/toteutukset">Ilmoittaudu kurssille</a></li>
+                        {% endif %}
+                        {% if is_teacher %}
+                        <li><a href="{{base_path}}/toteutus/toteutukset">Tulevat kurssit</a></li>
+                        {% endif %}
                         <li><a href="{{base_path}}/kurssi/kurssit">Selaa kursseja</a></li>
                         {% if is_teacher %}
                         <li><a href="{{base_path}}/suoritus/suoritukset">Selaa suorituksia</a></li>
+                        <li><a href="{{base_path}}/toteutus/my">Selaa toteutuksiasi</a></li>
                         {% endif %}
                         {% if is_student %}
-                        <li><a href="{{base_path}}/suoritus/show/{{get_id}}">Selaa suorituksiasi</a></li>
+                        <li><a href="{{base_path}}/ilmoittautumiset/show/">Selaa ilmoittautumisiasi</a></li>
+                        <li><a href="{{base_path}}/suoritus/my">Selaa suorituksiasi</a></li>
                         {% endif %}
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                    {% if user_logged_in %}
-                    {% if is_admin %}
-                    <li><a href="{{base_path}}/user/all">Selaa käyttäjiä</a></li>
-                    {% endif %}
-                    <form class="navbar-form navbar-right" method="post" action="{{base_path}}/user/logout">
-                        <button type="submit" class="btn btn-default">Kirjaudu ulos</button>
-                    </form>
-                    {% else %}
+                        {% if user_logged_in %}
+                        {% if is_admin %}
+                        <li><a href="{{base_path}}/user/all">Selaa käyttäjiä</a></li>
+                        {% endif %}
+                        <li><a href="{{base_path}}/user/self">Profiilisi</a></li>
+                        <form class="navbar-form navbar-right" method="post" action="{{base_path}}/user/logout">
+                            <button type="submit" class="btn btn-default">Kirjaudu ulos</button>
+                        </form>
+                        {% else %}
                         <li><a href="{{base_path}}/user/login">Kirjaudu sisään</a></li>
                         <li><a href="{{base_path}}/user/signup">Luo uusi käyttäjä</a></li>
-                    {% endif %}
+                        {% endif %}
                     </ul>
                 </div>
             </div>

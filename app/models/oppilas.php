@@ -44,10 +44,14 @@ class Oppilas extends BaseModel {
         return null;
     }
 
-    //EI TESTATTU = EI VÄLTTÄMÄTTÄ TOIMI
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Oppilas (etunimi, sukunimi, opintopisteet, opiskelijanumero) VALUES (:etunimi, :sukunimi, :opintopisteet, :opiskelijanumero)');
         $query->execute(array('etunimi' => $this->etunimi, 'sukunimi' => $this->sukunimi, 'opintopisteet' => $this->opintopisteet, 'opiskelijanumero' => $this->opiskelijanumero));
     }
+    
+    public static function get_op($id) {
+        $student = self::find($id);
+        return $student->opintopisteet;
+    } 
 
 }

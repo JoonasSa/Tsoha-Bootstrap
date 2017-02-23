@@ -75,10 +75,8 @@ class Suoritus extends BaseModel {
                 );
                 $opintopisteet += $row['opintopisteet'];
             }
-            $data = array();
-            $data['suoritukset'] = $suoritukset;
-            $data['op'] = $opintopisteet;
-            return $data;
+            $suoritukset['op'] = $opintopisteet;
+            return $suoritukset;
         }
 
         return null;
@@ -112,5 +110,5 @@ class Suoritus extends BaseModel {
 
         return $toteutusjoin;
     }
-
+    
 }

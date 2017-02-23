@@ -45,7 +45,6 @@ class Kayttaja extends BaseModel {
         return null;
     }
     
-    //EI TOIMI OPISKELIJOILLE...
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (username, password, teacher) VALUES (:username, :password, :teacher) RETURNING id');
         $query->bindValue(":teacher", $this->teacher, PDO::PARAM_INT);
@@ -55,27 +54,4 @@ class Kayttaja extends BaseModel {
         return $this;
     }
 
-    /*
-    private static function getIdentity($row) {
-        $user_id = $row['id'];
-        if ($row['teacher'] === true) {
-            $query_opettaja = DB::connection()->prepare('SELECT * FROM Opettaja WHERE opettajatunnus = :user_id LIMIT 1');
-            $query_opettaja->execute(array('user_id' => $user_id));
-            $row_opettaja = $query_opettaja->fetch();
-            if ($row_opettaja) {
-                $kayttaja = new Kayttaja(array('id' => $row_opettaja['opettajatunnus'], 'username' => $username, 'teacher' => $row['teacher']));
-                return $kayttaja;
-            }
-        } else {
-            $query_opiskelija = DB::connection()->prepare('SELECT * FROM Oppilas WHERE opiskelijanumero = :user_id LIMIT 1');
-            $query_opiskelija->execute(array('user_id' => $user_id));
-            $row_opiskelija = $query_opiskelija->fetch();
-            if ($row_opiskelija) {
-                $kayttaja = new Kayttaja(array('id' => $row_opiskelija['opiskelijanumero'], 'username' => $username, 'teacher' => $row['teacher']));
-                return $kayttaja;
-            }
-        }
-        return null;
-    }
-    */
 }

@@ -7,8 +7,8 @@
 </div>
 {% endif %}
 
-<h1>Opintopisteet: {{data.op.opintopisteet}}</h1>
-
+<h1>Opintopisteet: {{opintopisteet}}</h1>
+</br>
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -22,7 +22,7 @@
     </thead>
 
     <tbody>
-        {% for s in data.suoritukset %}
+        {% for s in suoritukset %}
         <tr>
             <td>{{s.arvosana}}</td>
             <td>{{s.opintopisteet}}</td>
@@ -34,19 +34,5 @@
         {% endfor %}
     </tbody>
 </table>
-
-<p>{{tote.info}}</p>
-</br>
-{% if is_teacher %}
-<a href="{{base_path}}/toteutus/{{tote.tote_id}}/edit" class="btn btn-default">Muokkaa</a>
-<form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/destroy" style="display: inline-block;">
-    <button type="submit" class="btn btn-danger">Poista</button>
-</form>
-{% endif %}
-{% if is_student %}
-<form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/join" style="display: inline-block;">
-    <button type="submit" class="btn btn-default">Ilmoittaudu kurssille</button>
-</form>
-{% endif %}
 
 {% endblock %}

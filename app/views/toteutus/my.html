@@ -2,15 +2,9 @@
 
 {% block content %}
 <div class="page-header">
-    {% if is_teacher %}
-    <h1>Tulevat kurssit</h1>
-    {% else %}
-    <h1>Ilmoittaudu kurssille</h1>
-    {% endif %}
+    <h1>Toteutukseni</h1>
 </div>
-{% if is_teacher %}
-<p><a class="btn btn-default btn-sm" href="{{base_path}}/toteutus/new">Lisää uusi toteutus</a></p>
-{% endif %}
+
 <table class="table table-striped table-bordered">
     <thead>
         <tr>
@@ -19,7 +13,6 @@
             <th>Opintopisteet</th>
             <th>Alkupvm</th>
             <th>Koepvm</th>
-            <th>Vastuuopettaja</th>
             <th>Kurssisivu</th>
         </tr>
     </thead>
@@ -32,20 +25,11 @@
             <td>{{tote.opintopisteet}}</td>
             <td>{{tote.alkupvm}}</td>
             <td>{{tote.koepvm}}</td>
-            <td>{{tote.opettaja}}</td>
             <td><a href="{{base_path}}/kurssi/show/{{tote.kurssi_id}}">Linkki</a></td>
-            {% if user_logged_in %}
-            {% if is_teacher %}
             <td><a href="{{base_path}}/toteutus/{{tote.tote_id}}/edit" class="btn btn-default">Muokkaa</a></td>
             <td><form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/destroy" style="display: inline-block;">
                     <button type="submit" class="btn btn-danger">Poista</button>
                 </form></td>
-            {% endif %}
-            {% if is_student %}
-            <th><a href="" class="btn btn-default">Ilmoittaudu kurssille</a></th>
-            {% endif %}
-
-            {% endif %}
         </tr>
         {% endfor %}
     </tbody>

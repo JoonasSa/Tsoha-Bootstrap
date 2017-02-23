@@ -64,12 +64,16 @@ $routes->post('/toteutus/:id/destroy', function($id) {
     ToteutusController::destroy($id);
 });
 
+$routes->get('/toteutus/my', function() {
+    ToteutusController::myOpe();
+});
+
 $routes->get('/suoritus/suoritukset', function() {
     SuoritusController::index();
 });
 
-$routes->get('/suoritus/show/:id', function($id) {
-    SuoritusController::show($id);
+$routes->get('/suoritus/my', function() {
+    SuoritusController::my();
 });
 
 $routes->get('/suoritus/new', function() {
@@ -108,6 +112,6 @@ $routes->get('/user/all', function() {
     KayttajaController::index();
 });
 
-$routes->get('/user/show/:id', function($id) {
-    KayttajaController::show($id);
+$routes->get('/user/self', function() {
+    KayttajaController::profile();
 });

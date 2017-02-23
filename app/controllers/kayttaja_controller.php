@@ -9,15 +9,21 @@ class KayttajaController extends BaseController {
     public static function signup() {
         View::make('user/signup.html');
     }
-    
-    public static function show($id) {
-        $kayttaja = Kayttaja::find($id);
-        View::make("user/show.html", array('user' => $kayttaja));
+
+    public static function profile() {
+        if (BaseController::get_user_logged_in()) {
+            $kayttaja = Kayttaja::find(BaseController::get_id());
+            View::make("user/self.html", array('user' => $kayttaja));
+        }
+        Redirect::to("/", array('message' => "Vain sisäänkirjautuneille käyttäjille!"));
     }
 
     public static function index() {
+        if (BaseController::get_is_admin()) {
         $kayttajat = Kayttaja::all();
         View::make('user/all.html', array('users' => $kayttajat));
+        }
+        Redirect::to("/", array('message' => "Vain admineille!"));
     }
 
     public static function handle_login() {

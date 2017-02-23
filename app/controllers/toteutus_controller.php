@@ -11,17 +11,29 @@ class ToteutusController extends BaseController {
         $toteutusjoin = Toteutus::oneLeftJoinKurssiOpe($id);
         View::make('toteutus/show.html', array('tote' => $toteutusjoin));
     }
-    
+
+    public static function myOpe() {
+        if (BaseController::get_is_teacher()) {
+            $toteutusjoin = Toteutus::leftJoinByOpeId(BaseController::get_id());
+            View::make('toteutus/my.html', array('toteutusjoin' => $toteutusjoin));
+        }
+        Redirect::to("/", array('message' => "Vain opettajille."));
+    }
+
     public static function create() {
-        $opettajat = Opettaja::all();    
+        $opettajat = Opettaja::all();
         $kurssit = Kurssi::all();
         $periodit = array(1, 2, 3, 4, 5);
         View::make("toteutus/new.html", array('kurssit' => $kurssit, 'opettajat' => $opettajat, 'periodit' => $periodit));
     }
-    
+
     public static function store() {
-        if(isset($_POST) && count($_POST)) { $_SESSION['post'] = $_POST; }
-        if(isset($_SESSION['post']) && count($_SESSION['post'])) { $_POST = $_SESSION['post']; }
+        if (isset($_POST) && count($_POST)) {
+            $_SESSION['post'] = $_POST;
+        }
+        if (isset($_SESSION['post']) && count($_SESSION['post'])) {
+            $_POST = $_SESSION['post'];
+        }
         $params = $_POST;
 
         $attributes = array(
@@ -42,7 +54,7 @@ class ToteutusController extends BaseController {
             Redirect::to('/toteutus/show/' . $toteutus->tote_id, array('message' => 'Kurssi on lisätty tietokantaan.'));
         } else {
             View::make('toteutus/new.html', array('errors' => $errors, 'tote' => $attributes, 'kurssit' => Kurssi::all(),
-                'opettajat' => Opettaja::all(), 'periodit' => array(1,2,3,4,5), 'selected_kurssi' => $params['kurssi'],
+                'opettajat' => Opettaja::all(), 'periodit' => array(1, 2, 3, 4, 5), 'selected_kurssi' => $params['kurssi'],
                 'selected_opettaja' => $params['opettaja'], 'selected_periodi' => $params['periodi']));
         }
     }
@@ -57,8 +69,12 @@ class ToteutusController extends BaseController {
 
     public static function update($id) {
         Kint::dump($_POST);
-        if(isset($_POST) && count($_POST)) { $_SESSION['post'] = $_POST; }
-        if(isset($_SESSION['post']) && count($_SESSION['post'])) { $_POST = $_SESSION['post']; }
+        if (isset($_POST) && count($_POST)) {
+            $_SESSION['post'] = $_POST;
+        }
+        if (isset($_SESSION['post']) && count($_SESSION['post'])) {
+            $_POST = $_SESSION['post'];
+        }
         $params = $_POST;
 
         $attributes = array(
@@ -81,11 +97,11 @@ class ToteutusController extends BaseController {
             Redirect::to('/toteutus/show/' . $toteutus->tote_id, array('message' => 'Toteutusta on muokattu onnistuneesti!'));
         } else {
             View::make('toteutus/edit.html', array('errors' => $errors, 'tote' => $attributes, 'kurssit' => Kurssi::all(),
-                'opettajat' => Opettaja::all(), 'periodit' => array(1,2,3,4,5), 'selected_kurssi' => $params['kurssi'],
+                'opettajat' => Opettaja::all(), 'periodit' => array(1, 2, 3, 4, 5), 'selected_kurssi' => $params['kurssi'],
                 'selected_opettaja' => $params['opettaja'], 'selected_periodi' => $params['periodi']));
         }
     }
-    
+
     public static function destroy($id) {
         $toteutus = new Toteutus(array('tote_id' => $id));
         $toteutus->destroy();
