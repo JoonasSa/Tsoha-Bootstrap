@@ -44,6 +44,10 @@ $routes->get('/toteutus/show/:id', function($id) {
     ToteutusController::show($id);
 });
 
+$routes->get('/toteutus/showall/:id', function($id) {
+    ToteutusController::showAll($id);
+});
+
 $routes->get('/toteutus/:id/edit', function($id) {
     ToteutusController::edit($id);
 });
@@ -114,4 +118,8 @@ $routes->get('/user/all', function() {
 
 $routes->get('/user/self', function() {
     KayttajaController::profile();
+});
+
+$routes->get('/ilmoittautumiset/my', function() {
+    IlmoController::my();
 });

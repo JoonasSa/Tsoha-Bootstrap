@@ -74,22 +74,6 @@ class Toteutus extends BaseModel {
         return $toteutusjoin;
     }
 
-    private static function makeJoin($row) {
-        $toteutusjoin = array(
-            "tote_id" => $row["tote_id"],
-            "periodi" => $row["periodi"],
-            "alkupvm" => $row["alkupvm"],
-            "koepvm" => $row["koepvm"],
-            "info" => $row["info"],
-            "vastuu_id" => $row["vastuu_id"],
-            "kurssi_id" => $row["kurssi_id"],
-            "nimi" => $row["nimi"],
-            "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
-            "opintopisteet" => $row["opintopisteet"]
-        );
-        return $toteutusjoin;
-    }
-
     public static function leftJoinByOpeId($id) {
         $query = DB::connection()->prepare("SELECT * FROM Opettaja LEFT JOIN Toteutus ON "
                 . "(Opettaja.opettajatunnus = Toteutus.vastuu_id) LEFT JOIN Kurssi ON "
@@ -114,6 +98,20 @@ class Toteutus extends BaseModel {
         return $toteutusjoin;
     }
 
+    public static function leftJoinByKurssiId($id) {
+        $query = DB::connection()->prepare("SELECT * FROM Kurssi LEFT JOIN Toteutus ON "
+                . "(Kurssi.kurssi_id = Toteutus.kurssi_id) LEFT JOIN Opettaja ON "
+                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) WHERE Kurssi.kurssi_id = :id");
+        $query->execute(array("id" => $id));
+        $rows = $query->fetchAll();
+        $toteutusjoin = array();
+
+        foreach ($rows as $row) {
+            $toteutusjoin[] = self::makeJoin($row);
+        }
+        return $toteutusjoin;
+    }
+
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Toteutus (periodi, alkupvm, koepvm, info , vastuu_id, kurssi_id) '
                 . 'VALUES (:periodi, :alkupvm, :koepvm, :info , :vastuu_id, :kurssi_id) RETURNING tote_id');
@@ -133,6 +131,22 @@ class Toteutus extends BaseModel {
     public function destroy() {
         $query = DB::connection()->prepare('DELETE FROM Toteutus WHERE tote_id = :tote_id');
         $query->execute(array('tote_id' => $this->tote_id));
+    }
+
+    private static function makeJoin($row) {
+        $toteutusjoin = array(
+            "tote_id" => $row["tote_id"],
+            "periodi" => $row["periodi"],
+            "alkupvm" => $row["alkupvm"],
+            "koepvm" => $row["koepvm"],
+            "info" => $row["info"],
+            "vastuu_id" => $row["vastuu_id"],
+            "kurssi_id" => $row["kurssi_id"],
+            "nimi" => $row["nimi"],
+            "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
+            "opintopisteet" => $row["opintopisteet"]
+        );
+        return $toteutusjoin;
     }
 
 }

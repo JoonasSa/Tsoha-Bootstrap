@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Ilmoittautumiset</h1>
+</div>
+
+<table class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th>Kurssi</th>
+            <th>Periodi</th>
+            <th>Alkupvm</th>
+            <th>Koepvm</th>
+            <th>Opintopisteet</th>
+            <th>Opettaja</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {% for ilmo in ilmot %}
+        <tr>
+            <td><a href="{{base_path}}/kurssi/show/{{ilmo.kurssi_id}}">{{ilmo.nimi}}</a></td>
+            <td>{{ilmo.periodi}}</a></td>
+            <td>{{ilmo.alkupvm}}</td>
+            <td>{{ilmo.koepvm}}</td>
+            <td>{{ilmo.opintopisteet}}</td>
+            <td>{{ilmo.opettaja}}</td>
+            <td><form method="post" action="{{base_path}}/ilmoittautuminen/{{ilmo.tote_id}}/destroy" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger">Poista</button>
+                </form></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+
+</table>
+
+{% endblock %}

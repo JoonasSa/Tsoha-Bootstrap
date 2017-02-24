@@ -11,6 +11,15 @@ class ToteutusController extends BaseController {
         $toteutusjoin = Toteutus::oneLeftJoinKurssiOpe($id);
         View::make('toteutus/show.html', array('tote' => $toteutusjoin));
     }
+    
+    public static function showAll($kurssi_id) {
+        $toteutusjoin = Toteutus::leftJoinByKurssiId($kurssi_id);
+        $empty = null;
+        if ($toteutusjoin[0]['tote_id'] == null) {
+            $empty = true;
+        }
+        View::make('toteutus/showall.html', array('tote' => $toteutusjoin, 'empty' => $empty));
+    }
 
     public static function myOpe() {
         if (BaseController::get_is_teacher()) {
