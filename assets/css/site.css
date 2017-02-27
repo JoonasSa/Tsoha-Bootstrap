@@ -1,10 +1,21 @@
-#main-container{
-  max-width: 1200px;
-  padding: 10px 25px;
-  margin: 0px auto;
+#main-container {
+    max-width: 1200px;
+    padding: 10px 25px;
+    margin: 0px auto;
+    font-family: 'Amiko';
 }
 
-.navbar .container-fluid{
-  max-width: 1200px;
-  margin: 0px auto;
+.navbar .container-fluid {
+    max-width: 1200px;
+    margin: 0px auto;
+    font-family: 'Amiko';
+}
+
+.navbar .navbar-nav > li > a:hover, .navbar .navbar-nav > li > a:focus,
+.navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+    color: #FAEC94;
+}
+
+.navbar .navbar-nav > li > a, .navbar .navbar-brand {
+   color: white;
 }
