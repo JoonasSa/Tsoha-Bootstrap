@@ -18,8 +18,8 @@
     <div class="form-group">
         <label>Arvosana</label>
         <select class="form-control" name="arvosana">
-            {% for suorittaja in suorittajat %}
-            <option value="{{tote.arvosana}}">{{tote.arvosana}}</option>
+            {% for arvo in arvosana %}
+            <option value="{{arvo}}">{{arvo}}</option>
             {% endfor %}
         </select>    
     </div>
@@ -31,7 +31,7 @@
         <label>Suorittaja</label>
         <select class="form-control" name="suorittaja">
             {% for suorittaja in suorittajat %}
-            <option value="{{tote.suorittaja}}">{{tote.suorittaja}}</option>
+            <option value="{{suorittaja}}">{{suorittaja}}</option>
             {% endfor %}
         </select>
     </div>

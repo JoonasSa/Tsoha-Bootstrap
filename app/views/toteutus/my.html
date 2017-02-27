@@ -26,12 +26,7 @@
             <td>{{tote.alkupvm}}</td>
             <td>{{tote.koepvm}}</td>
             <td><a href="{{base_path}}/kurssi/show/{{tote.kurssi_id}}">Linkki</a></td>
-            <td>
-                <form method="post" action="{{base_path}}/suoritus/new" style="display: inline-block;">
-                    <input name="toteutus" type="hidden" value="{{tote.tote_id}}">
-                    <button type="submit" class="btn btn-default">Arvostele oppilaita</button>
-                </form>
-            </td>            
+            <td><a href="{{base_path}}/suoritus/new/{{tote.tote_id}}" class="btn btn-default">Lisää suorituksia</a></td>        
             <td><a href="{{base_path}}/toteutus/{{tote.tote_id}}/edit" class="btn btn-default">Muokkaa</a></td>
             <td>
                 <form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/destroy" style="display: inline-block;">

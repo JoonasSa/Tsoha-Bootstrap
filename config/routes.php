@@ -80,8 +80,8 @@ $routes->get('/suoritus/my', function() {
     SuoritusController::my();
 });
 
-$routes->get('/suoritus/new', function() {
-    SuoritusController::create();
+$routes->get('/suoritus/new/:id', function($id) {
+    SuoritusController::create($id);
 });
 
 $routes->post('/suoritus', function() {

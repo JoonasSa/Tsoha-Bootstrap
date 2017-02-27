@@ -22,10 +22,13 @@ class SuoritusController extends BaseController {
         }
     }
 
-    public static function create() {
-        $oppilaat = Oppilas::all();
-        $toteutukset = Toteutus::all();
-        View::make("suoritus/new.html", array('oppilaat' => $oppilaat, 'toteutukset' => $toteutukset));
+    public static function create($tote_id) {
+        $ilmot = Ilmoittautuminen::findByToteutus($tote_id);
+        $oppilaat = array();
+        foreach ($ilmot as $ilmo) {
+            $oppilaat[] = Oppilas::find($ilmo);
+        }
+        View::make("suoritus/new.html", array('tote_id' => $tote_id, 'arvosana' => array(1,2,3,4,5), 'suorittajat' => $oppilaat));
     }
 
     public static function store() {
