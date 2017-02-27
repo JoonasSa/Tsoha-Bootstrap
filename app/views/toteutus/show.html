@@ -44,7 +44,7 @@
 </form>
 {% endif %}
 {% if is_student %}
-<form method="post" action="{{base_path}}/toteutus/{{tote.tote_id}}/join" style="display: inline-block;">
+<form method="post" action="{{base_path}}/ilmoittautuminen/enroll/{{tote.tote_id}}">
     <button type="submit" class="btn btn-default">Ilmoittaudu kurssille</button>
 </form>
 {% endif %}

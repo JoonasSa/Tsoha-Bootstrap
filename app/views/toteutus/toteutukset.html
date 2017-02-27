@@ -42,7 +42,11 @@
                 </form></td>
             {% endif %}
             {% if is_student %}
-            <th><a href="" class="btn btn-default">Ilmoittaudu kurssille</a></th>
+            <th>
+                <form method="post" action="{{base_path}}/ilmoittautuminen/enroll/{{tote.tote_id}}">
+                    <button type="submit" class="btn btn-default">Ilmoittaudu kurssille</button>
+                </form>
+            </th>
             {% endif %}
 
             {% endif %}

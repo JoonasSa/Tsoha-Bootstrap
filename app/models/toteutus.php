@@ -73,6 +73,31 @@ class Toteutus extends BaseModel {
         }
         return $toteutusjoin;
     }
+    
+    //EI TOIMI ÄLYKKÄÄSTI!
+    public static function sanitizedLeftJoinKurssiOpe($array) {
+        $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Opettaja ON "
+                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) ORDER BY Toteutus.periodi ASC, "
+                . "Kurssi.nimi ASC");
+        $query->execute();
+        $rows = $query->fetchAll();
+        $toteutusjoin = array();
+
+        foreach ($rows as $row) {
+            $already_enrolled = false;
+            foreach ($array as $arr) {
+                if ($arr->tote_id == $row['tote_id']) {
+                    $already_enrolled = true;
+                    break;
+                }
+            }
+            if (!$already_enrolled) {
+                $toteutusjoin[] = self::makeJoin($row);
+            }
+        }
+        return $toteutusjoin;
+    }
 
     public static function leftJoinByOpeId($id) {
         $query = DB::connection()->prepare("SELECT * FROM Opettaja LEFT JOIN Toteutus ON "
@@ -111,6 +136,22 @@ class Toteutus extends BaseModel {
         }
         return $toteutusjoin;
     }
+    
+    private static function makeJoin($row) {
+        $toteutusjoin = array(
+            "tote_id" => $row["tote_id"],
+            "periodi" => $row["periodi"],
+            "alkupvm" => $row["alkupvm"],
+            "koepvm" => $row["koepvm"],
+            "info" => $row["info"],
+            "vastuu_id" => $row["vastuu_id"],
+            "kurssi_id" => $row["kurssi_id"],
+            "nimi" => $row["nimi"],
+            "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
+            "opintopisteet" => $row["opintopisteet"]
+        );
+        return $toteutusjoin;
+    }
 
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Toteutus (periodi, alkupvm, koepvm, info , vastuu_id, kurssi_id) '
@@ -131,22 +172,6 @@ class Toteutus extends BaseModel {
     public function destroy() {
         $query = DB::connection()->prepare('DELETE FROM Toteutus WHERE tote_id = :tote_id');
         $query->execute(array('tote_id' => $this->tote_id));
-    }
-
-    private static function makeJoin($row) {
-        $toteutusjoin = array(
-            "tote_id" => $row["tote_id"],
-            "periodi" => $row["periodi"],
-            "alkupvm" => $row["alkupvm"],
-            "koepvm" => $row["koepvm"],
-            "info" => $row["info"],
-            "vastuu_id" => $row["vastuu_id"],
-            "kurssi_id" => $row["kurssi_id"],
-            "nimi" => $row["nimi"],
-            "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
-            "opintopisteet" => $row["opintopisteet"]
-        );
-        return $toteutusjoin;
     }
 
 }

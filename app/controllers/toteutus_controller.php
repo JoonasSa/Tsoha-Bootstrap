@@ -3,15 +3,21 @@
 class ToteutusController extends BaseController {
 
     public static function index() {
-        $toteutusjoin = Toteutus::allLeftJoinKurssiOpe();
-        View::make('toteutus/toteutukset.html', array('toteutusjoin' => $toteutusjoin));
+        if (BaseController::get_is_student()) {
+            $array = Ilmoittautuminen::findByOppilas(BaseController::get_id());
+            $toteutusjoin = Toteutus::sanitizedLeftJoinKurssiOpe($array);
+            View::make('toteutus/toteutukset.html', array('toteutusjoin' => $toteutusjoin));
+        } else {
+            $toteutusjoin = Toteutus::allLeftJoinKurssiOpe();
+            View::make('toteutus/toteutukset.html', array('toteutusjoin' => $toteutusjoin));
+        }
     }
 
     public static function show($id) {
         $toteutusjoin = Toteutus::oneLeftJoinKurssiOpe($id);
         View::make('toteutus/show.html', array('tote' => $toteutusjoin));
     }
-    
+
     public static function showAll($kurssi_id) {
         $toteutusjoin = Toteutus::leftJoinByKurssiId($kurssi_id);
         $empty = null;

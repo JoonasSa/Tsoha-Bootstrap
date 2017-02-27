@@ -120,6 +120,14 @@ $routes->get('/user/self', function() {
     KayttajaController::profile();
 });
 
-$routes->get('/ilmoittautumiset/my', function() {
+$routes->get('/ilmoittautuminen/my', function() {
     IlmoController::my();
+});
+
+$routes->post('/ilmoittautuminen/enroll/:id', function($id) {
+    IlmoController::store($id);
+});
+
+$routes->post('/ilmoittautuminen/:tote_id/:id/destroy', function($tote_id, $id) {
+    IlmoController::destroy($tote_id, $id);
 });
