@@ -102,7 +102,8 @@ class Toteutus extends BaseModel {
     public static function leftJoinByOpeId($id) {
         $query = DB::connection()->prepare("SELECT * FROM Opettaja LEFT JOIN Toteutus ON "
                 . "(Opettaja.opettajatunnus = Toteutus.vastuu_id) LEFT JOIN Kurssi ON "
-                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) WHERE opettajatunnus = :id");
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) WHERE opettajatunnus = :id "
+                . "ORDER BY Toteutus.periodi ASC, Kurssi.nimi ASC");
         $query->execute(array("id" => $id));
         $rows = $query->fetchAll();
         $toteutusjoin = array();

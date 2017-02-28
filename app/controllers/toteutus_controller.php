@@ -83,7 +83,6 @@ class ToteutusController extends BaseController {
     }
 
     public static function update($id) {
-        Kint::dump($_POST);
         if (isset($_POST) && count($_POST)) {
             $_SESSION['post'] = $_POST;
         }

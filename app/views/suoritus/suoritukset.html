@@ -5,7 +5,7 @@
     <h1>Kaikki suoritukset</h1>
 </div>
 
-<p><a class="btn btn-default btn-sm" href="{{base_path}}/suoritus/new">Lisää uusi suoritus</a></p>
+<p><a class="btn btn-default btn-sm" href="{{base_path}}/toteutus/my">Lisää uusi suoritus</a></p>
 
 <table class="table table-condensed table-bordered">
     <thead>
@@ -30,7 +30,7 @@
             <td>{{s.kurssi}}</td>
             <td><a href="{{base_path}}/kurssi/show/{{s.kurssi_id}}">Linkki</a></td>
             <td><a href="{{base_path}}/toteutus/show/{{s.tote_id}}">Linkki</a></td>
-            <td><form method="post" action="{{base_path}}/suoritus/{{s.tote_id}}{{s.id}}/destroy" style="display: inline-block;">
+            <td><form method="post" action="{{base_path}}/suoritus/{{s.tote_id}}/{{s.id}}/destroy" style="display: inline-block;">
                     <button type="submit" class="btn btn-danger">Poista</button>
                 </form></td>
         </tr>

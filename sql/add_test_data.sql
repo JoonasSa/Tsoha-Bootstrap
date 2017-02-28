@@ -32,10 +32,8 @@ INSERT INTO Suoritus(pvm, arvosana, tote_id, suorittaja)
 VALUES (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 1, 4),
 (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 1, 2, 4),
 (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 3, 3, 4),
-(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 5, 4),
 (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 2, 1, 5),
 (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 3, 2, 5),
-(NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 3, 5),
 (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 4, 4, 5),
 (NOW() - '1 year'::INTERVAL * ROUND(RANDOM() * 10), 5, 5, 5);
 

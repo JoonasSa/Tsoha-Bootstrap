@@ -65,7 +65,7 @@ $routes->post('/toteutus/:id/edit', function($id) {
 });
 
 $routes->post('/toteutus/:id/destroy', function($id) {
-    ToteutusController::destroy($id);
+    ToteutusController::destroy( $id);
 });
 
 $routes->get('/toteutus/my', function() {
@@ -88,8 +88,8 @@ $routes->post('/suoritus', function() {
     SuoritusController::store();
 });
 
-$routes->post('/suoritus/:id/destroy', function($id) {
-    SuoritusController::destroy($id);
+$routes->post('/suoritus/:tote_id/:id/destroy', function($tote_id, $id) {
+    SuoritusController::destroy($tote_id, $id);
 });
 
 $routes->get('/user/login', function() {

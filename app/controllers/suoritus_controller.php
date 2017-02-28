@@ -23,30 +23,77 @@ class SuoritusController extends BaseController {
     }
 
     public static function create($tote_id) {
-        $ilmot = Ilmoittautuminen::findByToteutus($tote_id);
-        $oppilaat = array();
-        foreach ($ilmot as $ilmo) {
-            $oppilaat[] = Oppilas::find($ilmo);
-        }
-        View::make("suoritus/new.html", array('tote_id' => $tote_id, 'arvosana' => array(1,2,3,4,5), 'suorittajat' => $oppilaat));
+        $oppilaat = self::generateOppilaatArray($tote_id);
+        $tote = Toteutus::oneLeftJoinKurssiOpe($tote_id);
+        View::make("suoritus/new.html", array('tote' => $tote, 'arvosana' => array(1, 2, 3, 4, 5), 'suorittajat' => $oppilaat));
     }
 
     public static function store() {
+        if (isset($_POST) && count($_POST)) {
+            $_SESSION['post'] = $_POST;
+        }
+        if (isset($_SESSION['post']) && count($_SESSION['post'])) {
+            $_POST = $_SESSION['post'];
+        }
         $params = $_POST;
-        $suoritus = new Suoritus(array(
+
+        $suorittaja = null;
+        $arvosana = null;
+        $pvm = null;
+        //EI PALAUTA testi variableja
+        $errors = self::getErrors($suorittaja, $arvosana, $pvm, $params);
+        if (count($errors) == 0) {
+            self::save($params);
+        }
+        View::make('suoritus/new.html', array('errors' => $errors, 'tote' => Toteutus::oneLeftJoinKurssiOpe($params['tote_id']),
+            'arvosana' => array(1, 2, 3, 4, 5), 'suorittajat' => self::generateOppilaatArray($params['tote_id']),
+            'selected_arvosana' => $arvosana, 'selected_pvm' => $pvm, 'selected_suorittaja' => $suorittaja));
+    }
+
+    private static function save($params) {
+        $suoritus = new Suoritus($attributes = array(
             'tote_id' => $params['tote_id'],
             'pvm' => $params['pvm'],
             'arvosana' => $params['arvosana'],
             'suorittaja' => $params['suorittaja']
         ));
+        $suoritus->save();
+        $_SESSION['post'] = null;
+        Redirect::to('/suoritus/suoritukset', array('message' => 'Suoritus on lisätty tietokantaan.'));
+    }
 
-        $errors = BaseModel::validateDate($params['pvm'], "Päivämäärä", array());
-        if (count($errors) == 0) {
-            $suoritus->save();
-            Redirect::to('/suoritus/suoritukset/', array('message' => 'Suoritus on lisätty tietokantaan.'));
+    private static function getErrors($suorittaja, $arvosana, $pvm, $params) {
+        Kint::dump($params);
+        $errors = array();
+        if (!isset($params['suorittaja'])) {
+            $errors[] = "Täytä oppilaan tiedot!";
         } else {
-            View::make('suoritus/new.html', array('errors' => $errors, 'suoritus' => $params));
+            $suorittaja = $params['suorittaja'];
         }
+        if (!isset($params['arvosana'])) {
+            $errors[] = "Täytä arvosana tiedot!";
+        } else {
+            $arvosana = $params['arvosana'];
+            $errors = BaseModel::validate_number("Arvosana", $params['arvosana'], 0, 5, $errors);
+        }
+        if (strlen($params['pvm']) == 0) {
+            $errors[] = "Täytä päivämäärä tiedot!";
+        } else {
+            $pvm = $params['pvm'];
+            $errors = BaseModel::validateDate($params['pvm'], "Päivämäärä", $errors);
+        }
+        return $errors;
+    }
+
+    private static function generateOppilaatArray($tote_id) {
+        $ilmot = Ilmoittautuminen::findByToteutus($tote_id);
+        $oppilaat = array();
+        foreach ($ilmot as $ilmo) {
+            if (!Suoritus::getIsGraded($tote_id, $ilmo->ilmoittautuja)) {
+                $oppilaat[] = Oppilas::find($ilmo->ilmoittautuja);
+            }
+        }
+        return $oppilaat;
     }
 
     public static function destroy($tote_id, $suorittaja) {

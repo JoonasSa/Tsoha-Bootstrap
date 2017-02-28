@@ -7,33 +7,19 @@ class Ilmoittautuminen extends BaseModel {
     public static function findByOppilas($id) {
         $query = DB::connection()->prepare("SELECT * FROM Ilmoittautuminen WHERE ilmoittautuja = :id");
         $query->execute(array("id" => $id));
-        $rows = $query->fetchAll();
-        return self::makeIlmoArray($rows);
+        return self::makeIlmoArray($query->fetchAll());
     }
 
     public static function findByToteutus($id) {
         $query = DB::connection()->prepare("SELECT * FROM Ilmoittautuminen WHERE tote_id = :id");
         $query->execute(array("id" => $id));
-        $rows = $query->fetchAll();
-        return self::makeIlmoArray($rows);
+        return self::makeIlmoArray($query->fetchAll());
     }
 
     public static function all() {
         $query = DB::connection()->prepare("SELECT * FROM Ilmoittautuminen");
         $query->execute();
-        $rows = $query->fetchAll();
-        return self::makeIlmoArray($rows);
-    }
-
-    public static function allLeftJoinOppilasToteutusKurssi() {
-        $query = DB::connection()->prepare("SELECT * FROM Ilmoittautuminen "
-                . "LEFT JOIN Oppilas ON (Ilmoittautuminen.ilmoittautuja = Oppilas.opsikelijanumero) "
-                . "LEFT JOIN Toteutus ON (Ilmoittautuminen.tote_id = Toteutus.tote_id) "
-                . "LEFT JOIN Kurssi ON (Toteutus.kurssi_id = Kurssi.kurssi_id)");
-        $query->execute();
-        $rows = $query->fetchAll();
-
-        return $ilmot;
+        return self::makeIlmoArray($query->fetchAll());
     }
 
     private static function makeIlmoArray($rows) {
@@ -45,6 +31,18 @@ class Ilmoittautuminen extends BaseModel {
                 'ilmoaika' => $row['ilmoaika']
             ));
         }
+        return $ilmot;
+    }
+
+    //NOT READY
+    public static function allLeftJoinOppilasToteutusKurssi() {
+        $query = DB::connection()->prepare("SELECT * FROM Ilmoittautuminen "
+                . "LEFT JOIN Oppilas ON (Ilmoittautuminen.ilmoittautuja = Oppilas.opiskelijanumero) "
+                . "LEFT JOIN Toteutus ON (Ilmoittautuminen.tote_id = Toteutus.tote_id) "
+                . "LEFT JOIN Kurssi ON (Toteutus.kurssi_id = Kurssi.kurssi_id)");
+        $query->execute();
+        $rows = $query->fetchAll();
+
         return $ilmot;
     }
 
@@ -82,7 +80,7 @@ class Ilmoittautuminen extends BaseModel {
         $row = $query->fetch();
         $this->ilmo_aika = $row['ilmoaika'];
     }
-    
+
     public function destroy() {
         $query = DB::connection()->prepare('DELETE FROM Ilmoittautuminen WHERE tote_id = :tote_id AND ilmoittautuja = :ilmoittautuja');
         $query->execute(array('tote_id' => $this->tote_id, 'ilmoittautuja' => $this->ilmoittautuja));

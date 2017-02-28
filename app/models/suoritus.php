@@ -12,8 +12,21 @@ class Suoritus extends BaseModel {
         $query = DB::connection()->prepare("SELECT * FROM Suoritus");
         $query->execute();
         $rows = $query->fetchAll();
-        $suoritukset = array();
+        self::makeSmallArray($rows);
+    }
 
+    public static function findByToteutus($id) {
+        $query = DB::connection()->prepare("SELECT * FROM Suoritus WHERE tote_id = :id");
+        $query->execute(array("id" => $id));
+        $rows = $query->fetchAll();
+        if ($rows) {
+            return self::makeSmallArray($rows);
+        }
+        return null;
+    }
+
+    private static function makeSmallArray($rows) {
+        $suoritukset = array();
         foreach ($rows as $row) {
             $suoritukset[] = new Suoritus(array(
                 "tote_id" => $row["tote_id"],
@@ -22,32 +35,10 @@ class Suoritus extends BaseModel {
                 "suorittaja" => $row["suorittaja"]
             ));
         }
-
         return $suoritukset;
     }
 
-    public static function findByToteutus($id) {
-        $query = DB::connection()->prepare("SELECT * FROM Suoritus WHERE tote_id = :id");
-        $query->execute(array("id" => $id));
-        $rows = $query->fetchAll();
-
-        if ($rows) {
-            $suoritukset = array();
-            foreach ($rows as $row) {
-                $suoritukset[] = new Suoritus(array(
-                    "tote_id" => $row["tote_id"],
-                    "pvm" => $row["pvm"],
-                    "arvosana" => $row["arvosana"],
-                    "suorittaja" => $row["suorittaja"]
-                ));
-            }
-            return $suoritukset;
-        }
-
-        return null;
-    }
-
-    //EI TOIMI
+    //TÄN VOIS PIENENTÄÄ
     public static function findByOppilas($id) {
         $query = DB::connection()->prepare("SELECT Suoritus.tote_id, Suoritus.arvosana, "
                 . "Suoritus.pvm, Oppilas.opiskelijanumero, Oppilas.etunimi, Oppilas.sukunimi, "
@@ -59,9 +50,9 @@ class Suoritus extends BaseModel {
                 . "ORDER BY Kurssi.nimi ASC, Suoritus.pvm ASC");
         $query->execute(array("id" => $id));
         $rows = $query->fetchAll();
-
         if ($rows) {
             $suoritukset = array();
+
             foreach ($rows as $row) {
                 $suoritukset[] = array(
                     "tote_id" => $row["tote_id"],
@@ -69,14 +60,15 @@ class Suoritus extends BaseModel {
                     "pvm" => $row["pvm"],
                     "kurssi" => $row["nimi"],
                     "kurssi_id" => $row["kurssi_id"],
-                    "username" => $row["etunimi"] . $row["sukunimi"],
-                    "id" => $row["opiskelijanumero"],
+                    "etunimi" => $row["etunimi"],
+                    "sukunimi" => $row["sukunimi"],
+                    "opiskelijanumero" => $row["opiskelijanumero"],
                     "opintopisteet" => $row["opintopisteet"]
                 );
             }
+
             return $suoritukset;
         }
-
         return null;
     }
 
@@ -91,10 +83,14 @@ class Suoritus extends BaseModel {
                 . "Kurssi.nimi ASC, Suoritus.pvm ASC");
         $query->execute();
         $rows = $query->fetchAll();
-        $toteutusjoin = array();
+        return self::makeBigArray($rows);
+    }
+
+    private static function makeBigArray($rows) {
+        $suoritukset = array();
 
         foreach ($rows as $row) {
-            $toteutusjoin[] = array(
+            $suoritukset[] = array(
                 "tote_id" => $row["tote_id"],
                 "arvosana" => $row["arvosana"],
                 "pvm" => $row["pvm"],
@@ -106,7 +102,25 @@ class Suoritus extends BaseModel {
             );
         }
 
-        return $toteutusjoin;
+        return $suoritukset;
     }
-    
+
+    public static function getIsGraded($tote_id, $suorittaja) {
+        $query = DB::connection()->prepare('SELECT * FROM Suoritus WHERE tote_id = :tote_id AND suorittaja = :suorittaja LIMIT 1');
+        $query->execute(array('tote_id' => $tote_id, 'suorittaja' => $suorittaja));
+        return $query->fetch();
+    }
+
+    public function save() {
+        $query = DB::connection()->prepare('INSERT INTO Suoritus (tote_id, pvm, arvosana, suorittaja)'
+                . 'VALUES (:tote_id, :pvm, :arvosana, :suorittaja)');
+        $query->execute(array('tote_id' => $this->tote_id, 'pvm' => $this->pvm,
+            'arvosana' => $this->arvosana, 'suorittaja' => $this->suorittaja));
+    }
+
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Suoritus WHERE tote_id = :tote_id AND suorittaja = :suorittaja');
+        $query->execute(array('tote_id' => $this->tote_id, 'suorittaja' => $this->suorittaja));
+    }
+
 }

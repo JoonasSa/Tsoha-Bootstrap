@@ -12,12 +12,13 @@
 </div>
 {% endif %}
 
-<p>Kurssi: {{tote.nimi}}, periodi: {{tote.periodi}}</p>
+<h3>Kurssi: {{tote.nimi}}, periodi: {{tote.periodi}}</h3>
 
-<form method="post" action="{{base_path}}/kurssi">
+{% if suorittajat %}
+<form method="post" action="{{base_path}}/suoritus">
     <div class="form-group">
         <label>Arvosana</label>
-        <select class="form-control" name="arvosana">
+        <select id="arvosana" class="form-control" name="arvosana">
             {% for arvo in arvosana %}
             <option value="{{arvo}}">{{arvo}}</option>
             {% endfor %}
@@ -25,18 +26,35 @@
     </div>
     <div class="form-group">
         <label>Päivämäärä</label>
-        <input name="opintopisteet" class="form-control" value="{{tote.pvm}}" type="text">
+        <input id="pvm" name="pvm" class="form-control" value="{{tote.koepvm}}" type="text">
     </div>
     <div class="form-group">
         <label>Suorittaja</label>
-        <select class="form-control" name="suorittaja">
+        <select id="suorittaja" class="form-control" name="suorittaja">
             {% for suorittaja in suorittajat %}
-            <option value="{{suorittaja}}">{{suorittaja}}</option>
+            <option value="{{suorittaja.opiskelijanumero}}">{{suorittaja.opiskelijanumero}} - {{suorittaja.etunimi}} {{suorittaja.sukunimi}}</option>
             {% endfor %}
         </select>
     </div>
+    <input name="tote_id" value="{{tote.tote_id}}" type="hidden">
     <div class="form-group">
         <button type="submit" class="btn btn-primary">Lisää arviointi</button>
     </div>
 </form>
+
+<p hidden id="sarvosana">{{selected_arvosana}}</p>
+<p hidden id="ssuorittaja">{{selected_suorittaja}}</p>
+<p hidden id="spvm">{{selected_pvm}}</p>
+
+<script>
+
+    document.getElementById('arvosana').value = document.getElementById('sarvosana').innerHTML;
+    document.getElementById('suorittaja').value = document.getElementById('ssuorittaja').innerHTML;
+    document.getElementById('pvm').value = document.getElementById('spvm').innerHTML;
+
+</script>
+{% else %}
+</br>
+<h3>Kaikki oppilaat jo arvosteltu</h3>
+{% endif %}
 {% endblock %}
