@@ -37,17 +37,13 @@ class SuoritusController extends BaseController {
         }
         $params = $_POST;
 
-        $suorittaja = null;
-        $arvosana = null;
-        $pvm = null;
-        //EI PALAUTA testi variableja
-        $errors = self::getErrors($suorittaja, $arvosana, $pvm, $params);
-        if (count($errors) == 0) {
+        $array = self::getErrors($params);
+        if (count($array['errors']) == 0) {
             self::save($params);
         }
-        View::make('suoritus/new.html', array('errors' => $errors, 'tote' => Toteutus::oneLeftJoinKurssiOpe($params['tote_id']),
+        View::make('suoritus/new.html', array('errors' => $array['errors'], 'tote' => Toteutus::oneLeftJoinKurssiOpe($params['tote_id']),
             'arvosana' => array(1, 2, 3, 4, 5), 'suorittajat' => self::generateOppilaatArray($params['tote_id']),
-            'selected_arvosana' => $arvosana, 'selected_pvm' => $pvm, 'selected_suorittaja' => $suorittaja));
+            'selected_arvosana' => $array['arvosana'], 'selected_pvm' => $array['pvm'], 'selected_suorittaja' => $array['suorittaja']));
     }
 
     private static function save($params) {
@@ -62,27 +58,31 @@ class SuoritusController extends BaseController {
         Redirect::to('/suoritus/suoritukset', array('message' => 'Suoritus on lisätty tietokantaan.'));
     }
 
-    private static function getErrors($suorittaja, $arvosana, $pvm, $params) {
-        Kint::dump($params);
+    private static function getErrors($params) {
+        $array = array();
+        $array['arvosana'] = null;
+        $array['pvm'] = null;
+        $array['suorittaja'] = null;
         $errors = array();
         if (!isset($params['suorittaja'])) {
             $errors[] = "Täytä oppilaan tiedot!";
         } else {
-            $suorittaja = $params['suorittaja'];
+            $array['suorittaja'] = $params['suorittaja'];
         }
         if (!isset($params['arvosana'])) {
             $errors[] = "Täytä arvosana tiedot!";
         } else {
-            $arvosana = $params['arvosana'];
+            $array['arvosana'] = $params['arvosana'];
             $errors = BaseModel::validate_number("Arvosana", $params['arvosana'], 0, 5, $errors);
         }
         if (strlen($params['pvm']) == 0) {
             $errors[] = "Täytä päivämäärä tiedot!";
         } else {
-            $pvm = $params['pvm'];
+            $array['pvm'] = $params['pvm'];
             $errors = BaseModel::validateDate($params['pvm'], "Päivämäärä", $errors);
         }
-        return $errors;
+        $array['errors'] = $errors;
+        return $array;
     }
 
     private static function generateOppilaatArray($tote_id) {
