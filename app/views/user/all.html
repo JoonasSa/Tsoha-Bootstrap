@@ -3,7 +3,13 @@
 <div class="page-header">
     <h1>Kaikki käyttäjät</h1>
 </div>
-<p><a class="btn btn-default btn-sm" href="{{base_path}}/user/new">Lisää uusi käyttäjä</a></p>
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
 <table class="table table-condensed table-bordered">
     <thead>
         <tr>
@@ -18,7 +24,6 @@
             <td>{{user.username}}</td>
             <td>{{user.id}}</td>
             <td>{{user.teacher}}</td>
-            <th><a href="{{base_path}}/user/{{user.id}}/edit" class="btn btn-default">Muokkaa</a></th>
             <th><form method="post" action="{{base_path}}/user/{{user.id}}/destroy" style="display: inline-block;">
                     <button type="submit" class="btn btn-danger">Poista</button>
                 </form></th>

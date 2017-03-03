@@ -124,6 +124,10 @@ $routes->post('/user/password', function() {
     KayttajaController::change_password();
 });
 
+$routes->post('/user/:id/destroy', function($id) {
+    KayttajaController::destroy($id);
+});
+
 $routes->get('/user/all', function() {
     KayttajaController::index();
 });

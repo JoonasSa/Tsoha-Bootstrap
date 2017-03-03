@@ -5,6 +5,12 @@
     <h1>Ilmoittautumiset</h1>
 </div>
 
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
 {% if empty %}
 <h3>Ei yhtään ilmoittautumista.</h3>
 {% else %}

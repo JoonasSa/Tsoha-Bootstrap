@@ -99,6 +99,12 @@ class KayttajaController extends BaseController {
         }
         View::make("user/password.html", array('errors' => $errors));
     }
+    
+    public static function destroy($id) {
+        $user = new Kayttaja(array('id' => $id));
+        $user->destroy();
+        Redirect::to('/user/all', array('message' => 'Käyttäjä on poistettu onnistuneesti!'));
+    }
 
     public static function getErrors($params) {
         $errors = array();

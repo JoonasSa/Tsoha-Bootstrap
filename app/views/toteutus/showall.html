@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div class="page-header">
+    <h1>{{tote[0].nimi}}</h1>
+</div>
+
 {% if message %}
 <div class="alert alert-success">
     {{message}}
@@ -11,9 +15,7 @@
 </br>
 <h1>Ei yhtään tulevaa kurssia</h1>
 {% else %}
-<h1>{{tote[0].nimi}}</h1>
 <p><a href="{{base_path}}/kurssi/show/{{tote[0].kurssi_id}}" class="btn btn-default">Kurssisivu</a></p>
-
 
 <table class="table table-condensed table-bordered">
     <thead>

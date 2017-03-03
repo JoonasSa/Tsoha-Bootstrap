@@ -58,5 +58,10 @@ class Kayttaja extends BaseModel {
         $this->id = $row['id'];
         return $this;
     }
+    
+    public function destroy() {
+        $query = DB::connection()->prepare('DELETE FROM Kayttaja WHERE id = :id');
+        $query->execute(array('id' => $this->id));
+    }
 
 }
