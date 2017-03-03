@@ -147,6 +147,11 @@ class ToteutusController extends BaseController {
         $errors = array();
         $errors = BaseModel::validateDate($params['alkupvm'], "Alkupäivä", $errors);
         $errors = BaseModel::validateDate($params['koepvm'], "Koepäivä", $errors);
+        if (isset($params['alkupvm']) && isset($params['koepvm'])) {
+            if (strtotime($params['alkupvm']) >= strtotime($params['koepvm'])) {
+                $errors[] = "Koepäivän pitää olla alkupäivämäärä jälkeen!";
+            }
+        }
         if (!isset($params['kurssi'])) {
             $errors[] = "Täytä kurssi tiedot!";
         } else {

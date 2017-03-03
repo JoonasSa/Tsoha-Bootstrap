@@ -174,6 +174,7 @@ class Toteutus extends BaseModel {
             "info" => $row["info"],
             "vastuu_id" => $row["vastuu_id"],
             "kurssi_id" => $row["kurssi_id"],
+            "kuvaus" => $row["kuvaus"],
             "nimi" => $row["nimi"],
             "opettaja" => $row["etunimi"] . " " . $row["sukunimi"],
             "opintopisteet" => $row["opintopisteet"]
