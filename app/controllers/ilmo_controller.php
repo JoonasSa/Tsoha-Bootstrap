@@ -6,7 +6,11 @@ class IlmoController extends BaseController {
         if (BaseController::get_user_logged_in()) {
             $id = BaseController::get_id();
             $ilmot = Ilmoittautuminen::leftJoinToteutusKurssiOpettajaByOppilas($id);
-            View::make("/ilmoittautuminen/my.html", array('ilmot' => $ilmot));
+            $empty = null;
+            if ($ilmot == null) {
+                $empty = true;
+            }
+            View::make("/ilmoittautuminen/my.html", array('empty' => $empty, 'ilmot' => $ilmot));
         }
         Redirect::to("/", array('error' => "Vain oppilaille!"));
     }
@@ -24,7 +28,7 @@ class IlmoController extends BaseController {
                 'tote_id' => $id));
             //errors
             $ilmo->save();
-            Redirect::to("/toteutus/toteutukset", array('message' => "Vain oppilaille!"));
+            Redirect::to("/toteutus/toteutukset", array('message' => "Ilmoittauduttu kurssille!"));
         }
         Redirect::to("/", array('message' => "Vain oppilaille!"));
     }

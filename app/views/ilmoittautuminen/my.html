@@ -5,6 +5,9 @@
     <h1>Ilmoittautumiset</h1>
 </div>
 
+{% if empty %}
+<h3>Ei yhtään ilmoittautumista.</h3>
+{% else %}
 <table class="table table-condensed table-bordered">
     <thead>
         <tr>
@@ -34,5 +37,5 @@
     </tbody>
 
 </table>
-
+{% endif %}
 {% endblock %}

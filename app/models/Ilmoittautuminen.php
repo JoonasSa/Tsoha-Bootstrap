@@ -34,19 +34,7 @@ class Ilmoittautuminen extends BaseModel {
         return $ilmot;
     }
 
-    //NOT READY
-    public static function allLeftJoinOppilasToteutusKurssi() {
-        $query = DB::connection()->prepare("SELECT * FROM Ilmoittautuminen "
-                . "LEFT JOIN Oppilas ON (Ilmoittautuminen.ilmoittautuja = Oppilas.opiskelijanumero) "
-                . "LEFT JOIN Toteutus ON (Ilmoittautuminen.tote_id = Toteutus.tote_id) "
-                . "LEFT JOIN Kurssi ON (Toteutus.kurssi_id = Kurssi.kurssi_id)");
-        $query->execute();
-        $rows = $query->fetchAll();
-
-        return $ilmot;
-    }
-
-    public static function leftJoinToteutusKurssiOpettajaByOppilas($id) {
+    public static function leftJoinToteutusKurssiOpettajaByOppilas($ilmoittautuja) {
         $query = DB::connection()->prepare("SELECT Ilmoittautuminen.tote_id, Ilmoittautuminen.ilmoaika, "
                 . "Toteutus.alkupvm, Toteutus.koepvm, Toteutus.kurssi_id, Toteutus.periodi, "
                 . "Kurssi.nimi, Kurssi.opintopisteet, Opettaja.etunimi, "
@@ -54,23 +42,28 @@ class Ilmoittautuminen extends BaseModel {
                 . "LEFT JOIN Toteutus ON (Ilmoittautuminen.tote_id = Toteutus.tote_id) "
                 . "LEFT JOIN Kurssi ON (Toteutus.kurssi_id = Kurssi.kurssi_id) "
                 . "LEFT JOIN Opettaja ON (Toteutus.vastuu_id = Opettaja.opettajatunnus) "
-                . "WHERE Ilmoittautuminen.ilmoittautuja = :id");
-        $query->execute(array("id" => $id));
+                . "WHERE Ilmoittautuminen.ilmoittautuja = :ilmoittautuja");
+        $query->execute(array("ilmoittautuja" => $ilmoittautuja));
         $rows = $query->fetchAll();
         $ilmot = array();
         foreach ($rows as $row) {
-            $ilmot[] = array(
-                'tote_id' => $row['tote_id'],
-                'ilmoaika' => $row['ilmoaika'],
-                'alkupvm' => $row['alkupvm'],
-                'koepvm' => $row['koepvm'],
-                'periodi' => $row['periodi'],
-                'kurssi_id' => $row['kurssi_id'],
-                'nimi' => $row['nimi'],
-                'opintopisteet' => $row['opintopisteet'],
-                'opettaja' => $row['etunimi'] . ' ' . $row['sukunimi']
-            );
+            $ilmot[] = self::makeJoinArray($row);
         }
+        return $ilmot;
+    }
+    
+    private static function makeJoinArray($row) {
+        $ilmot = array(
+            'tote_id' => $row['tote_id'],
+            'ilmoaika' => $row['ilmoaika'],
+            'alkupvm' => $row['alkupvm'],
+            'koepvm' => $row['koepvm'],
+            'periodi' => $row['periodi'],
+            'kurssi_id' => $row['kurssi_id'],
+            'nimi' => $row['nimi'],
+            'opintopisteet' => $row['opintopisteet'],
+            'opettaja' => $row['etunimi'] . ' ' . $row['sukunimi']
+        );
         return $ilmot;
     }
 

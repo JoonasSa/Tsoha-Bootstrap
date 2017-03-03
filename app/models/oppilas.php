@@ -54,4 +54,9 @@ class Oppilas extends BaseModel {
         return $student->opintopisteet;
     } 
 
+    public function edit_op($op) {
+        $this->opintopisteet += $op;
+        $query = DB::connection()->prepare('UPDATE Oppilas SET opintopisteet = :opintopisteet WHERE opiskelijanumero = :opiskelijanumero');
+        $query->execute(array('opintopisteet' => $this->opintopisteet, 'opiskelijanumero' => $this->opiskelijanumero));
+    }
 }

@@ -73,7 +73,7 @@ class Toteutus extends BaseModel {
         }
         return $toteutusjoin;
     }
-    
+
     //EI TOIMI ÄLYKKÄÄSTI!
     public static function sanitizedLeftJoinKurssiOpe($array) {
         $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
@@ -83,7 +83,6 @@ class Toteutus extends BaseModel {
         $query->execute();
         $rows = $query->fetchAll();
         $toteutusjoin = array();
-
         foreach ($rows as $row) {
             $already_enrolled = false;
             foreach ($array as $arr) {
@@ -95,6 +94,34 @@ class Toteutus extends BaseModel {
             if (!$already_enrolled) {
                 $toteutusjoin[] = self::makeJoin($row);
             }
+        }
+        return $toteutusjoin;
+    }
+
+    //EI KAI KÄYTETÄ MISSÄÄN
+    public static function findToteIdByKurssi($id) {
+        $query = DB::connection()->prepare("SELECT Toteutus.tote_id FROM Toteutus "
+                . "WHERE Toteutus.kurssi_id = :id");
+        $query->execute(array("id" => $id));
+        $rows = $query->fetchAll();
+        $totet = array();
+        foreach ($rows as $row) {
+            $totet[] = $row['tote_id'];
+        }
+        return $totet;
+    }
+
+    //EI KAI KÄYTETÄ MISSÄÄN
+    public static function leftJoinKurssi($array) {
+        $query = DB::connection()->prepare("SELECT * FROM Toteutus LEFT JOIN Kurssi ON "
+                . "(Toteutus.kurssi_id = Kurssi.kurssi_id) LEFT JOIN Opettaja ON "
+                . "(Toteutus.vastuu_id = Opettaja.opettajatunnus) ORDER BY Toteutus.periodi ASC, "
+                . "Kurssi.nimi ASC");
+        $query->execute();
+        $rows = $query->fetchAll();
+        $toteutusjoin = array();
+        foreach ($rows as $row) {
+            $toteutusjoin[] = self::makeJoin($row);
         }
         return $toteutusjoin;
     }
@@ -137,7 +164,7 @@ class Toteutus extends BaseModel {
         }
         return $toteutusjoin;
     }
-    
+
     private static function makeJoin($row) {
         $toteutusjoin = array(
             "tote_id" => $row["tote_id"],

@@ -8,6 +8,13 @@
     <h1>Ilmoittaudu kurssille</h1>
     {% endif %}
 </div>
+
+{% if message %}
+<div class="alert alert-success">
+    {{message}}
+</div>
+{% endif %}
+
 {% if is_teacher %}
 <p><a class="btn btn-default btn-sm" href="{{base_path}}/toteutus/new">Lisää uusi toteutus</a></p>
 {% endif %}

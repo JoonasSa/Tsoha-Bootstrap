@@ -7,13 +7,14 @@
 </div>
 {% endif %}
 
-<h1>{{tote[0].nimi}}</h1>
-<p><a href="{{base_path}}/kurssi/show/{{tote[0].kurssi_id}}" class="btn btn-default">Kurssisivu</a></p>
-
 {% if empty %}
 </br>
 <h1>Ei yhtään tulevaa kurssia</h1>
 {% else %}
+<h1>{{tote[0].nimi}}</h1>
+<p><a href="{{base_path}}/kurssi/show/{{tote[0].kurssi_id}}" class="btn btn-default">Kurssisivu</a></p>
+
+
 <table class="table table-condensed table-bordered">
     <thead>
         <tr>
@@ -37,7 +38,7 @@
             <td>{{t.opettaja}}</td>
             {% if is_student %}
             <td>
-                <form method="post" action="{{base_path}}/toteutus/{{t.tote_id}}/join" style="display: inline-block;">
+                <form method="post" action="{{base_path}}/ilmoittautuminen/enroll/{{t.tote_id}}">
                     <button type="submit" class="btn btn-default">Ilmoittaudu kurssille</button>
                 </form>
             </td>

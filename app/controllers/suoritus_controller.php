@@ -15,8 +15,12 @@ class SuoritusController extends BaseController {
         if (BaseController::get_is_student()) {
             $id = BaseController::get_id();
             $suoritusjoin = Suoritus::findByOppilas($id);
+            $empty = null;
+            if ($suoritusjoin[0]['tote_id'] == null) {
+                $empty = true;
+            }
             $opintopisteet = Oppilas::get_op($id);
-            View::make('suoritus/my.html', array('suoritukset' => $suoritusjoin, 'opintopisteet' => $opintopisteet));
+            View::make('suoritus/my.html', array('empty' => $empty, 'suoritukset' => $suoritusjoin, 'opintopisteet' => $opintopisteet));
         } else {
             Redirect::to('/', array('message' => 'Sinulla ei ole oikeutta päästä tälle sivulle.'));
         }
@@ -55,6 +59,7 @@ class SuoritusController extends BaseController {
         ));
         $suoritus->save();
         $_SESSION['post'] = null;
+        self::addOpToStudent($params['suorittaja'], $params['tote_id'], 1);
         Redirect::to('/suoritus/suoritukset', array('message' => 'Suoritus on lisätty tietokantaan.'));
     }
 
@@ -96,9 +101,16 @@ class SuoritusController extends BaseController {
         return $oppilaat;
     }
 
+    private static function addOpToStudent($id, $tote_id, $multiplier) {
+        $student = Oppilas::find($id);
+        $tote = Toteutus::oneLeftJoinKurssiOpe($tote_id);
+        $student->edit_op($multiplier * $tote['opintopisteet']);
+    }
+
     public static function destroy($tote_id, $suorittaja) {
         $suoritus = new Suoritus(array('tote_id' => $tote_id, 'suorittaja' => $suorittaja));
         $suoritus->destroy();
+        self::addOpToStudent($suorittaja, $tote_id, -1);
         Redirect::to('/suoritus/suoritukset', array('message' => 'Suoritus on poistettu onnistuneesti!'));
     }
 

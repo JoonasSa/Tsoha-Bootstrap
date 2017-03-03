@@ -20,10 +20,17 @@ class KayttajaController extends BaseController {
 
     public static function index() {
         if (BaseController::get_is_admin()) {
-        $kayttajat = Kayttaja::all();
-        View::make('user/all.html', array('users' => $kayttajat));
+            $kayttajat = Kayttaja::all();
+            View::make('user/all.html', array('users' => $kayttajat));
         }
         Redirect::to("/", array('message' => "Vain admineille!"));
+    }
+    
+    public static function password_edit() {
+        if (BaseController::get_user_logged_in()) {
+            View::make('user/password.html');
+        }
+        Redirect::to("/", array('message' => "Vain sisäänkirjautuneille käyttäjille!"));
     }
 
     public static function handle_login() {
@@ -77,6 +84,20 @@ class KayttajaController extends BaseController {
         } else {
             View::make('user/signup.html', array('errors' => $errors, 'attributes' => $params));
         }
+    }
+
+    public static function change_password() {
+        $params = $_POST;
+        $errors = BaseModel::validate_string("Salasana", $params['password'], 4, 50, array());
+        if ($params['password'] != $params['again']) {
+            $errors[] = "Salasana ja salasanan toisto eivät olleet samat!";
+        }
+        if (count($errors) == 0) {
+            $user = Kayttaja::find(BaseController::get_id());
+            $user->update_password($params['password']);
+            Redirect::to('/', array('message' => 'Salasana vaihdettu!'));
+        }
+        View::make("user/password.html", array('errors' => $errors));
     }
 
     public static function getErrors($params) {

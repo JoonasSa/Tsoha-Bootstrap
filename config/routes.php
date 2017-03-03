@@ -56,6 +56,10 @@ $routes->get('/toteutus/new', function() {
     ToteutusController::create();
 });
 
+$routes->get('/toteutus/my', function() {
+    ToteutusController::myOpe();
+});
+
 $routes->post('/toteutus', function() {
     ToteutusController::store();
 });
@@ -65,11 +69,11 @@ $routes->post('/toteutus/:id/edit', function($id) {
 });
 
 $routes->post('/toteutus/:id/destroy', function($id) {
-    ToteutusController::destroy( $id);
+    ToteutusController::destroy($id);
 });
 
-$routes->get('/toteutus/my', function() {
-    ToteutusController::myOpe();
+$routes->post('/toteutus/:id/join', function($id) {
+    ToteutusController::join($id);
 });
 
 $routes->get('/suoritus/suoritukset', function() {
@@ -110,6 +114,14 @@ $routes->post('/user/signup', function() {
 
 $routes->post('/user/logout', function() {
     KayttajaController::handle_logout();
+});
+
+$routes->get('/user/self/password', function() {
+    KayttajaController::password_edit();
+});
+
+$routes->post('/user/password', function() {
+    KayttajaController::change_password();
 });
 
 $routes->get('/user/all', function() {

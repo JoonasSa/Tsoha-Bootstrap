@@ -45,6 +45,11 @@ class Kayttaja extends BaseModel {
         return null;
     }
     
+    public function update_password($password) {
+        $query = DB::connection()->prepare('UPDATE Kayttaja SET password = :password WHERE id = :id');
+        $query->execute(array('password' => $password, 'id' => $this->id));
+    }
+    
     public function save() {
         $query = DB::connection()->prepare('INSERT INTO Kayttaja (username, password, teacher) VALUES (:username, :password, :teacher) RETURNING id');
         $query->bindValue(":teacher", $this->teacher, PDO::PARAM_INT);

@@ -1,5 +1,10 @@
 {% extends "base.html" %}
 {% block content %}
+
+<div class="page-header">
+  <h1>Kirjaudu sisään</h1>
+</div>
+
 {% if errors %}
     <div class="alert alert-danger">
       <ul>
@@ -9,8 +14,6 @@
       </ul>
     </div>
 {% endif %}
-
-  <h1>Kirjaudu sisään</h1>
 
   <form method="post" action="{{base_path}}/user/login">
     <div class="form-group">

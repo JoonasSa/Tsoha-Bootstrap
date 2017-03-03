@@ -1,12 +1,14 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="page-header">
+    <h1>Tervetuloa Kurssijärjestelmään!</h1>
+</div>
+
 {% if message %}
 <div class="alert alert-success">
     {{message}}
 </div>
 {% endif %}
-<div class="page-header">
-    <h1>Tervetuloa Kurssijärjestelmään!</h1>
-</div>
+
 {% endblock %}

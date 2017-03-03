@@ -23,7 +23,9 @@
             <td>{{kurssi.opintopisteet}}</td>
             {% if is_teacher %}
             <th><a href="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/edit" class="btn btn-default">Muokkaa</a></th>
-            <th><a href="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/destroy" class="btn btn-danger">Poista</a></th>
+            <td><form method="post" action="{{base_path}}/kurssi/{{kurssi.kurssi_id}}/destroy" style="display: inline-block;">
+                    <button type="submit" class="btn btn-danger">Poista</button>
+                </form></td>
             {% endif %}
             {% if is_student %}
             <th><a href="{{base_path}}/toteutus/showall/{{kurssi.kurssi_id}}" class="btn btn-default">Tulevat kurssit</a></th>

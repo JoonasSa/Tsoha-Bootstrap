@@ -19,9 +19,16 @@ class ToteutusController extends BaseController {
     }
 
     public static function showAll($kurssi_id) {
-        $toteutusjoin = Toteutus::leftJoinByKurssiId($kurssi_id);
+        $array = Ilmoittautuminen::findByOppilas(BaseController::get_id());
+        $totet = Toteutus::sanitizedLeftJoinKurssiOpe($array);
+        $toteutusjoin = array();
+        foreach ($totet as $tote) {
+            if ($tote['kurssi_id'] == $kurssi_id) {
+                $toteutusjoin[] = $tote;
+            }
+        }
         $empty = null;
-        if ($toteutusjoin[0]['tote_id'] == null) {
+        if ($toteutusjoin == null) {
             $empty = true;
         }
         View::make('toteutus/showall.html', array('tote' => $toteutusjoin, 'empty' => $empty));
