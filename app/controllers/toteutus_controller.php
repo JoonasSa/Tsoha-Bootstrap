@@ -96,7 +96,8 @@ class ToteutusController extends BaseController {
         $opettajat = Opettaja::all();
         $kurssit = Kurssi::all();
         $periodit = array(1, 2, 3, 4, 5);
-        View::make('toteutus/edit.html', array('tote' => $tote, 'kurssit' => $kurssit, 'opettajat' => $opettajat, 'periodit' => $periodit));
+        View::make('toteutus/edit.html', array('tote' => $tote, 'kurssit' => $kurssit, 'opettajat' => $opettajat, 'periodit' => $periodit,
+            'selected_kurssi' => $tote['kurssi_id'], 'selected_opettaja' => $tote['vastuu_id'], 'selected_periodi' => $tote['periodi']));
     }
 
     public static function update($id) {
